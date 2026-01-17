@@ -24,16 +24,6 @@ const UserSchema = new mongoose.Schema(
       address: String,
       mobile: String,
     },
-    about: {
-      bio: String,
-      title: String,
-      skills: [String],
-      experience: String,
-      education: String,
-      displayName: String,
-      initials: String,
-      profileImage: String,
-    },
     lastPasswordChange: {
       type: Date,
       default: null,
@@ -45,6 +35,7 @@ const UserSchema = new mongoose.Schema(
   },
   {
     timestamps: true,
+    collection: "admin", // Rename collection to 'admin'
   },
 );
 

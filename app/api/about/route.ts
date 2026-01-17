@@ -2,15 +2,15 @@ import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import connectDB from "@/lib/mongodb";
-import User from "@/models/User";
+import About from "@/models/About";
 
 export async function GET(req: NextRequest) {
   try {
     await connectDB();
-    // Get the first user (admin) - public endpoint
-    const user = await User.findOne({});
+    // Get the about information - public endpoint
+    const about = await About.findOne({});
 
-    if (!user) {
+    if (!about) {
       return NextResponse.json({
         success: true,
         about: {
@@ -28,15 +28,15 @@ export async function GET(req: NextRequest) {
 
     return NextResponse.json({
       success: true,
-      about: user.about || {
-        bio: "",
-        title: "",
-        skills: [],
-        experience: "",
-        education: "",
-        displayName: "",
-        initials: "",
-        profileImage: "",
+      about: {
+        bio: about.bio,
+        title: about.title,
+        skills: about.skills,
+        experience: about.experience,
+        education: about.education,
+        displayName: about.displayName,
+        initials: about.initials,
+        profileImage: about.profileImage,
       },
     });
   } catch (error) {
@@ -68,32 +68,46 @@ export async function POST(req: NextRequest) {
     } = await req.json();
 
     await connectDB();
-    const user = await User.findOneAndUpdate(
-      { email: session.user?.email },
-      {
-        $set: {
-          about: {
-            bio,
-            title,
-            skills,
-            experience,
-            education,
-            displayName,
-            initials,
-            profileImage,
-          },
-        },
-      },
-      { new: true },
-    );
 
-    if (!user) {
-      return NextResponse.json({ error: "User not found" }, { status: 404 });
+    // Find existing about or create new one
+    let about = await About.findOne({});
+
+    if (!about) {
+      about = new About({
+        bio,
+        title,
+        skills,
+        experience,
+        education,
+        displayName,
+        initials,
+        profileImage,
+      });
+    } else {
+      about.bio = bio;
+      about.title = title;
+      about.skills = skills;
+      about.experience = experience;
+      about.education = education;
+      about.displayName = displayName;
+      about.initials = initials;
+      about.profileImage = profileImage;
     }
+
+    await about.save();
 
     return NextResponse.json({
       success: true,
-      about: user.about,
+      about: {
+        bio: about.bio,
+        title: about.title,
+        skills: about.skills,
+        experience: about.experience,
+        education: about.education,
+        displayName: about.displayName,
+        initials: about.initials,
+        profileImage: about.profileImage,
+      },
     });
   } catch (error) {
     console.error("Error updating about:", error);
