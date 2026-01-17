@@ -18,19 +18,28 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
+      console.log("Attempting sign in...");
       const result = await signIn("credentials", {
         email,
         password,
         redirect: false,
       });
 
+      console.log("Sign in result:", result);
+
       if (result?.error) {
+        console.error("Sign in error:", result.error);
         setError("Invalid credentials");
-      } else {
+      } else if (result?.ok) {
+        console.log("Sign in successful, redirecting...");
         router.push("/admin/dashboard");
+      } else {
+        console.error("Unexpected result:", result);
+        setError("An unexpected error occurred");
       }
     } catch (error) {
-      setError("An error occurred");
+      console.error("Sign in exception:", error);
+      setError("An error occurred. Check console for details.");
     } finally {
       setLoading(false);
     }
