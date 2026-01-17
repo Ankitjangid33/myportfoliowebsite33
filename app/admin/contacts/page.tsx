@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { Mail, Trash2, Eye, Clock } from "lucide-react";
+import { Mail, Trash2, Eye, Clock, AlertTriangle, X } from "lucide-react";
 
 interface Contact {
   _id: string;
@@ -20,6 +20,15 @@ export default function ContactsPage() {
   const [contacts, setContacts] = useState<Contact[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedContact, setSelectedContact] = useState<Contact | null>(null);
+  const [deleteModal, setDeleteModal] = useState<{
+    show: boolean;
+    contactId: string;
+    contactName: string;
+  }>({
+    show: false,
+    contactId: "",
+    contactName: "",
+  });
 
   useEffect(() => {
     if (status === "unauthenticated") {
@@ -45,20 +54,29 @@ export default function ContactsPage() {
     }
   };
 
-  const handleDelete = async (id: string) => {
-    if (!confirm("Are you sure you want to delete this contact?")) return;
-
+  const handleDelete = async () => {
     try {
-      const res = await fetch(`/api/contact/${id}`, { method: "DELETE" });
+      const res = await fetch(`/api/contact/${deleteModal.contactId}`, {
+        method: "DELETE",
+      });
       if (res.ok) {
         fetchContacts();
-        if (selectedContact?._id === id) {
+        if (selectedContact?._id === deleteModal.contactId) {
           setSelectedContact(null);
         }
+        setDeleteModal({ show: false, contactId: "", contactName: "" });
       }
     } catch (error) {
       console.error("Failed to delete contact");
     }
+  };
+
+  const openDeleteModal = (id: string, name: string) => {
+    setDeleteModal({ show: true, contactId: id, contactName: name });
+  };
+
+  const closeDeleteModal = () => {
+    setDeleteModal({ show: false, contactId: "", contactName: "" });
   };
 
   const handleStatusChange = async (id: string, status: string) => {
@@ -260,7 +278,7 @@ export default function ContactsPage() {
                   <button
                     onClick={(e) => {
                       e.stopPropagation();
-                      handleDelete(contact._id);
+                      openDeleteModal(contact._id, contact.name);
                     }}
                     className="text-red-400 hover:text-red-300 transition"
                   >
@@ -297,7 +315,7 @@ export default function ContactsPage() {
 
               <div className="mb-6">
                 <h3 className="text-gray-400 text-sm mb-2">Message</h3>
-                <p className="text-white leading-relaxed">
+                <p className="text-white leading-relaxed break-words whitespace-pre-wrap">
                   {selectedContact.message}
                 </p>
               </div>
@@ -340,6 +358,98 @@ export default function ContactsPage() {
           )}
         </div>
       </div>
+
+      {/* Delete Confirmation Modal */}
+      {deleteModal.show && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4"
+          style={{ animation: "fadeIn 0.2s ease-out" }}
+        >
+          {/* Backdrop */}
+          <div
+            className="absolute inset-0 bg-black bg-opacity-60"
+            style={{ backdropFilter: "blur(4px)" }}
+            onClick={closeDeleteModal}
+          ></div>
+
+          {/* Modal */}
+          <div
+            className="relative bg-slate-800 rounded-2xl border border-red-500 border-opacity-30 shadow-2xl max-w-md w-full"
+            style={{ animation: "scaleIn 0.2s ease-out" }}
+          >
+            {/* Header */}
+            <div className="flex items-start gap-4 p-6 pb-4">
+              <div className="flex-shrink-0 w-12 h-12 rounded-full bg-red-500 bg-opacity-20 flex items-center justify-center">
+                <AlertTriangle className="w-6 h-6 text-red-400" />
+              </div>
+              <div className="flex-1">
+                <h3 className="text-xl font-bold text-white mb-1">
+                  Delete Contact
+                </h3>
+                <p className="text-gray-400 text-sm">
+                  This action cannot be undone
+                </p>
+              </div>
+              <button
+                onClick={closeDeleteModal}
+                className="text-gray-400 hover:text-white transition-colors duration-200"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Content */}
+            <div className="px-6 pb-6">
+              <p className="text-gray-300 leading-relaxed">
+                Are you sure you want to delete the message from{" "}
+                <span className="font-semibold text-white">
+                  {deleteModal.contactName}
+                </span>
+                ? This will permanently remove the contact message from your
+                database.
+              </p>
+            </div>
+
+            {/* Actions */}
+            <div className="flex gap-3 p-6 pt-0">
+              <button
+                onClick={closeDeleteModal}
+                className="flex-1 px-4 py-2.5 bg-slate-700 hover:bg-slate-600 text-white rounded-lg transition-colors duration-200 font-medium"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleDelete}
+                className="flex-1 px-4 py-2.5 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors duration-200 font-medium"
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      <style jsx>{`
+        @keyframes fadeIn {
+          from {
+            opacity: 0;
+          }
+          to {
+            opacity: 1;
+          }
+        }
+
+        @keyframes scaleIn {
+          from {
+            opacity: 0;
+            transform: scale(0.95);
+          }
+          to {
+            opacity: 1;
+            transform: scale(1);
+          }
+        }
+      `}</style>
     </div>
   );
 }
