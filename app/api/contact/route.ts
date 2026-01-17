@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import dbConnect from "@/lib/mongodb";
 import Contact from "@/models/Contact";
+import Notification from "@/models/Notification";
 
 export async function GET() {
   try {
@@ -39,6 +40,16 @@ export async function POST(request: NextRequest) {
     }
 
     const contact = await Contact.create({ name, email, message });
+
+    // Create notification for new contact
+    await Notification.create({
+      type: "contact",
+      title: "New Contact Message",
+      message: `${name} sent you a message: "${message.substring(0, 50)}${message.length > 50 ? "..." : ""}"`,
+      link: "/admin/contacts",
+      relatedId: contact._id.toString(),
+    });
+
     return NextResponse.json(
       { success: true, data: contact, message: "Message sent successfully!" },
       { status: 201 },

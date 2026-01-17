@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { Mail, Phone, MapPin } from "lucide-react";
 
 interface ProfileData {
   email: string;
@@ -86,68 +87,73 @@ export default function ContactSection() {
   };
 
   return (
-    <section id="contact" className="py-20 px-6 bg-slate-900/50">
+    <section
+      id="contact"
+      className="py-12 sm:py-16 md:py-20 px-4 sm:px-6 bg-slate-900/50"
+    >
       <div className="container mx-auto max-w-4xl">
-        <h2 className="text-4xl font-bold text-white mb-12 text-center">
+        <h2 className="text-3xl sm:text-4xl font-bold text-white mb-8 sm:mb-12 text-center">
           Get In <span className="text-purple-400">Touch</span>
         </h2>
-        <div className="grid md:grid-cols-2 gap-12">
+        <div className="grid md:grid-cols-2 gap-8 sm:gap-10 md:gap-12">
           <div>
-            <h3 className="text-2xl font-semibold text-white mb-6">
+            <h3 className="text-xl sm:text-2xl font-semibold text-white mb-4 sm:mb-6">
               Let&apos;s Work Together
             </h3>
-            <p className="text-gray-300 mb-8">
+            <p className="text-sm sm:text-base text-gray-300 mb-6 sm:mb-8">
               I&apos;m always open to discussing new projects, creative ideas,
               or opportunities to be part of your vision.
             </p>
-            <div className="space-y-4">
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 bg-purple-500/20 rounded-lg flex items-center justify-center">
-                  <span className="text-2xl">📧</span>
+            <div className="space-y-3 sm:space-y-4">
+              <div className="flex items-center gap-3 sm:gap-4">
+                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-purple-500/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <Mail className="w-5 h-5 sm:w-6 sm:h-6 text-purple-400" />
                 </div>
-                <div>
-                  <p className="text-gray-400 text-sm">Email</p>
+                <div className="min-w-0">
+                  <p className="text-gray-400 text-xs sm:text-sm">Email</p>
                   <a
                     href={`mailto:${profile.email}`}
-                    className="text-white hover:text-purple-400 transition"
+                    className="text-sm sm:text-base text-white hover:text-purple-400 transition break-all"
                   >
                     {profile.email}
                   </a>
                 </div>
               </div>
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 bg-purple-500/20 rounded-lg flex items-center justify-center">
-                  <span className="text-2xl">📱</span>
+              <div className="flex items-center gap-3 sm:gap-4">
+                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-purple-500/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <Phone className="w-5 h-5 sm:w-6 sm:h-6 text-purple-400" />
                 </div>
-                <div>
-                  <p className="text-gray-400 text-sm">Phone</p>
+                <div className="min-w-0">
+                  <p className="text-gray-400 text-xs sm:text-sm">Phone</p>
                   <a
                     href={`tel:${profile.mobile}`}
-                    className="text-white hover:text-purple-400 transition"
+                    className="text-sm sm:text-base text-white hover:text-purple-400 transition"
                   >
                     {profile.mobile}
                   </a>
                 </div>
               </div>
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 bg-purple-500/20 rounded-lg flex items-center justify-center">
-                  <span className="text-2xl">📍</span>
+              <div className="flex items-center gap-3 sm:gap-4">
+                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-purple-500/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <MapPin className="w-5 h-5 sm:w-6 sm:h-6 text-purple-400" />
                 </div>
-                <div>
-                  <p className="text-gray-400 text-sm">Location</p>
-                  <p className="text-white">{profile.address}</p>
+                <div className="min-w-0">
+                  <p className="text-gray-400 text-xs sm:text-sm">Location</p>
+                  <p className="text-sm sm:text-base text-white">
+                    {profile.address}
+                  </p>
                 </div>
               </div>
             </div>
           </div>
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-3 sm:space-y-4">
             {status === "success" && (
-              <div className="p-4 bg-green-500/20 border border-green-500/30 rounded-lg text-green-400 text-sm">
+              <div className="p-3 sm:p-4 bg-green-500/20 border border-green-500/30 rounded-lg text-green-400 text-xs sm:text-sm">
                 ✓ Message sent successfully! I&apos;ll get back to you soon.
               </div>
             )}
             {status === "error" && (
-              <div className="p-4 bg-red-500/20 border border-red-500/30 rounded-lg text-red-400 text-sm">
+              <div className="p-3 sm:p-4 bg-red-500/20 border border-red-500/30 rounded-lg text-red-400 text-xs sm:text-sm">
                 ✗ {errorMessage}
               </div>
             )}
@@ -159,7 +165,7 @@ export default function ContactSection() {
               placeholder="Your Name"
               required
               disabled={status === "loading"}
-              className="w-full px-4 py-3 bg-slate-800 border border-purple-500/20 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-purple-500/40 disabled:opacity-50"
+              className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base bg-slate-800 border border-purple-500/20 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-purple-500/40 disabled:opacity-50"
             />
             <input
               type="email"
@@ -169,7 +175,7 @@ export default function ContactSection() {
               placeholder="Your Email"
               required
               disabled={status === "loading"}
-              className="w-full px-4 py-3 bg-slate-800 border border-purple-500/20 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-purple-500/40 disabled:opacity-50"
+              className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base bg-slate-800 border border-purple-500/20 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-purple-500/40 disabled:opacity-50"
             />
             <textarea
               name="message"
@@ -179,12 +185,12 @@ export default function ContactSection() {
               rows={5}
               required
               disabled={status === "loading"}
-              className="w-full px-4 py-3 bg-slate-800 border border-purple-500/20 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-purple-500/40 disabled:opacity-50"
+              className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base bg-slate-800 border border-purple-500/20 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-purple-500/40 disabled:opacity-50"
             ></textarea>
             <button
               type="submit"
               disabled={status === "loading"}
-              className="w-full px-8 py-3 bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full px-6 sm:px-8 py-2 sm:py-3 text-sm sm:text-base bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {status === "loading" ? "Sending..." : "Send Message"}
             </button>

@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from "react";
 import ContactSection from "./components/ContactSection";
+import { Menu, X, Target, GraduationCap, Rocket } from "lucide-react";
+import Image from "next/image";
 
 interface Project {
   _id: string;
@@ -25,6 +27,9 @@ interface AboutData {
   skills: string[];
   experience: string;
   education: string;
+  displayName: string;
+  initials: string;
+  profileImage: string;
 }
 
 export default function Home() {
@@ -40,7 +45,11 @@ export default function Home() {
     skills: [],
     experience: "",
     education: "",
+    displayName: "",
+    initials: "",
+    profileImage: "",
   });
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     fetch("/api/projects")
@@ -82,79 +91,207 @@ export default function Home() {
     <main className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
       {/* Navigation */}
       <nav className="fixed top-0 w-full bg-slate-900/80 backdrop-blur-sm z-50 border-b border-purple-500/20">
-        <div className="container mx-auto px-6 py-4">
+        <div className="container mx-auto px-4 sm:px-6 py-3 sm:py-4">
           <div className="flex justify-between items-center">
-            <h1 className="text-2xl font-bold text-white">
+            <h1 className="text-lg sm:text-xl md:text-2xl font-bold text-white">
               <span className="text-purple-400">&lt;</span>
               DevAnkit-AJ
               <span className="text-purple-400">/&gt;</span>
             </h1>
-            <div className="hidden md:flex space-x-8">
+
+            {/* Desktop Menu */}
+            <div className="hidden md:flex space-x-4 lg:space-x-8">
               <a
                 href="#home"
-                className="text-gray-300 hover:text-purple-400 transition"
+                className="text-gray-300 hover:text-purple-400 transition text-sm lg:text-base"
               >
                 Home
               </a>
               <a
                 href="#about"
-                className="text-gray-300 hover:text-purple-400 transition"
+                className="text-gray-300 hover:text-purple-400 transition text-sm lg:text-base"
               >
                 About
               </a>
               <a
                 href="#skills"
-                className="text-gray-300 hover:text-purple-400 transition"
+                className="text-gray-300 hover:text-purple-400 transition text-sm lg:text-base"
               >
                 Skills
               </a>
               <a
                 href="#projects"
-                className="text-gray-300 hover:text-purple-400 transition"
+                className="text-gray-300 hover:text-purple-400 transition text-sm lg:text-base"
               >
                 Projects
               </a>
               <a
                 href="#contact"
-                className="text-gray-300 hover:text-purple-400 transition"
+                className="text-gray-300 hover:text-purple-400 transition text-sm lg:text-base"
               >
                 Contact
               </a>
             </div>
+
+            {/* Mobile Menu Button */}
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="md:hidden p-2 text-gray-300 hover:text-purple-400 transition"
+              aria-label="Toggle menu"
+            >
+              {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            </button>
           </div>
+
+          {/* Mobile Menu */}
+          {mobileMenuOpen && (
+            <div className="md:hidden mt-4 pb-4 space-y-3">
+              <a
+                href="#home"
+                onClick={() => setMobileMenuOpen(false)}
+                className="block text-gray-300 hover:text-purple-400 transition py-2"
+              >
+                Home
+              </a>
+              <a
+                href="#about"
+                onClick={() => setMobileMenuOpen(false)}
+                className="block text-gray-300 hover:text-purple-400 transition py-2"
+              >
+                About
+              </a>
+              <a
+                href="#skills"
+                onClick={() => setMobileMenuOpen(false)}
+                className="block text-gray-300 hover:text-purple-400 transition py-2"
+              >
+                Skills
+              </a>
+              <a
+                href="#projects"
+                onClick={() => setMobileMenuOpen(false)}
+                className="block text-gray-300 hover:text-purple-400 transition py-2"
+              >
+                Projects
+              </a>
+              <a
+                href="#contact"
+                onClick={() => setMobileMenuOpen(false)}
+                className="block text-gray-300 hover:text-purple-400 transition py-2"
+              >
+                Contact
+              </a>
+            </div>
+          )}
         </div>
       </nav>
 
       {/* Hero Section */}
       <section
         id="home"
-        className="min-h-screen flex items-center justify-center px-6 pt-20"
+        className="min-h-screen flex items-center justify-center px-4 sm:px-6 pt-16 sm:pt-20 relative overflow-hidden"
       >
-        <div className="text-center">
-          <div className="mb-8">
-            <div className="w-32 h-32 mx-auto bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center text-4xl font-bold text-white">
-              WD
+        {/* Floating Particles Background */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          {[...Array(20)].map((_, i) => (
+            <div
+              key={i}
+              className="absolute animate-float"
+              style={{
+                left: `${Math.random() * 100}%`,
+                top: `${Math.random() * 100}%`,
+                animationDelay: `${Math.random() * 5}s`,
+                animationDuration: `${15 + Math.random() * 10}s`,
+              }}
+            >
+              <div
+                className={`w-2 h-2 rounded-full ${
+                  i % 3 === 0
+                    ? "bg-purple-500/30"
+                    : i % 3 === 1
+                      ? "bg-pink-500/30"
+                      : "bg-blue-500/30"
+                }`}
+                style={{
+                  boxShadow: `0 0 ${10 + Math.random() * 20}px currentColor`,
+                }}
+              />
+            </div>
+          ))}
+        </div>
+
+        <div className="text-center relative z-10 max-w-4xl mx-auto">
+          <div className="mb-6 sm:mb-8 relative">
+            {/* Animated rings around avatar */}
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="w-28 h-28 sm:w-36 md:w-40 sm:h-36 md:h-40 border-2 border-purple-500/30 rounded-full animate-ping-slow" />
+            </div>
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div
+                className="w-24 h-24 sm:w-32 md:w-36 sm:h-32 md:h-36 border-2 border-pink-500/30 rounded-full animate-ping-slow"
+                style={{ animationDelay: "1s" }}
+              />
+            </div>
+            <div className="w-20 h-20 sm:w-28 md:w-32 sm:h-28 md:h-32 mx-auto bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center text-2xl sm:text-3xl md:text-4xl font-bold text-white relative animate-pulse-glow overflow-hidden">
+              {about.profileImage ? (
+                <Image
+                  src={about.profileImage}
+                  alt={about.displayName || "Profile"}
+                  fill
+                  className="object-cover"
+                />
+              ) : (
+                <span>{about.initials}</span>
+              )}
             </div>
           </div>
-          <h1 className="text-5xl md:text-7xl font-bold text-white mb-4">
+
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold text-white mb-3 sm:mb-4 px-4">
             Hi, I&apos;m{" "}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600">
-              Your Name
+            <span className="relative inline-block group">
+              {/* Glowing orbs around the name */}
+              <div className="absolute -inset-4 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                <div className="absolute top-0 left-0 w-3 h-3 bg-purple-500 rounded-full animate-orbit-1 blur-sm" />
+                <div className="absolute top-0 right-0 w-3 h-3 bg-pink-500 rounded-full animate-orbit-2 blur-sm" />
+                <div className="absolute bottom-0 left-0 w-3 h-3 bg-blue-500 rounded-full animate-orbit-3 blur-sm" />
+                <div className="absolute bottom-0 right-0 w-3 h-3 bg-cyan-500 rounded-full animate-orbit-4 blur-sm" />
+              </div>
+
+              {/* Animated gradient text with glow */}
+              <span className="relative text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-500 to-purple-400 animate-gradient-x drop-shadow-[0_0_30px_rgba(168,85,247,0.5)]">
+                {about.displayName}
+              </span>
+
+              {/* Sparkle effects */}
+              <div className="absolute inset-0 overflow-visible">
+                <div className="absolute top-0 left-1/4 w-1 h-1 bg-white rounded-full animate-sparkle" />
+                <div
+                  className="absolute top-1/2 right-1/4 w-1 h-1 bg-white rounded-full animate-sparkle"
+                  style={{ animationDelay: "0.5s" }}
+                />
+                <div
+                  className="absolute bottom-0 left-1/2 w-1 h-1 bg-white rounded-full animate-sparkle"
+                  style={{ animationDelay: "1s" }}
+                />
+              </div>
             </span>
           </h1>
-          <p className="text-xl md:text-2xl text-gray-300 mb-8">
-            {about.title || "Full Stack Web Developer | UI/UX Enthusiast"}
+          <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-300 mb-6 sm:mb-8 animate-fade-in-up px-4">
+            {about.title}
           </p>
-          <div className="flex gap-4 justify-center">
+          <div
+            className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center animate-fade-in-up px-4"
+            style={{ animationDelay: "0.2s" }}
+          >
             <a
               href="#projects"
-              className="px-8 py-3 bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition"
+              className="px-6 sm:px-8 py-3 bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition transform hover:scale-105 hover:shadow-[0_0_30px_rgba(168,85,247,0.5)] text-center text-sm sm:text-base"
             >
               View My Work
             </a>
             <a
               href="#contact"
-              className="px-8 py-3 border border-purple-400 text-purple-400 hover:bg-purple-400 hover:text-white rounded-lg transition"
+              className="px-6 sm:px-8 py-3 border border-purple-400 text-purple-400 hover:bg-purple-400 hover:text-white rounded-lg transition transform hover:scale-105 hover:shadow-[0_0_30px_rgba(168,85,247,0.5)] text-center text-sm sm:text-base"
             >
               Contact Me
             </a>
@@ -163,67 +300,50 @@ export default function Home() {
       </section>
 
       {/* About Section */}
-      <section id="about" className="py-20 px-6">
+      <section id="about" className="py-12 sm:py-16 md:py-20 px-4 sm:px-6">
         <div className="container mx-auto max-w-6xl">
-          <h2 className="text-4xl font-bold text-white mb-12 text-center">
+          <h2 className="text-3xl sm:text-4xl font-bold text-white mb-8 sm:mb-12 text-center">
             About <span className="text-purple-400">Me</span>
           </h2>
-          <div className="grid md:grid-cols-2 gap-12 items-center">
-            <div className="bg-gradient-to-br from-purple-500/10 to-pink-500/10 p-8 rounded-2xl border border-purple-500/20">
-              <h3 className="text-2xl font-semibold text-white mb-4">
+          <div className="grid md:grid-cols-2 gap-6 sm:gap-8 md:gap-12 items-center">
+            <div className="bg-gradient-to-br from-purple-500/10 to-pink-500/10 p-6 sm:p-8 rounded-2xl border border-purple-500/20">
+              <h3 className="text-xl sm:text-2xl font-semibold text-white mb-3 sm:mb-4">
                 Who I Am
               </h3>
-              <p className="text-gray-300 leading-relaxed whitespace-pre-line">
-                {about.bio ||
-                  "I&apos;m a passionate web developer with expertise in creating modern, responsive, and user-friendly websites. With a strong foundation in both frontend and backend technologies, I bring ideas to life through clean code and creative design.\n\nI love solving complex problems and continuously learning new technologies to stay at the forefront of web development."}
+              <p className="text-sm sm:text-base text-gray-300 leading-relaxed whitespace-pre-line">
+                {about.bio}
               </p>
             </div>
             <div className="space-y-4">
               {about.experience && (
-                <div className="bg-slate-800/50 p-6 rounded-xl border border-purple-500/20">
-                  <h4 className="text-xl font-semibold text-purple-400 mb-2">
-                    🎯 Experience
+                <div className="bg-slate-800/50 p-4 sm:p-6 rounded-xl border border-purple-500/20">
+                  <h4 className="text-lg sm:text-xl font-semibold text-purple-400 mb-2 flex items-center gap-2">
+                    <Target className="w-5 h-5" />
+                    Experience
                   </h4>
-                  <p className="text-gray-300 whitespace-pre-line">
+                  <p className="text-sm sm:text-base text-gray-300 whitespace-pre-line">
                     {about.experience}
                   </p>
                 </div>
               )}
               {about.education && (
-                <div className="bg-slate-800/50 p-6 rounded-xl border border-purple-500/20">
-                  <h4 className="text-xl font-semibold text-purple-400 mb-2">
-                    🎓 Education
+                <div className="bg-slate-800/50 p-4 sm:p-6 rounded-xl border border-purple-500/20">
+                  <h4 className="text-lg sm:text-xl font-semibold text-purple-400 mb-2 flex items-center gap-2">
+                    <GraduationCap className="w-5 h-5" />
+                    Education
                   </h4>
-                  <p className="text-gray-300 whitespace-pre-line">
+                  <p className="text-sm sm:text-base text-gray-300 whitespace-pre-line">
                     {about.education}
                   </p>
                 </div>
               )}
               {!about.experience && !about.education && (
-                <>
-                  <div className="bg-slate-800/50 p-6 rounded-xl border border-purple-500/20">
-                    <h4 className="text-xl font-semibold text-purple-400 mb-2">
-                      🎯 Experience
-                    </h4>
-                    <p className="text-gray-300">
-                      5+ years building web applications
-                    </p>
-                  </div>
-                  <div className="bg-slate-800/50 p-6 rounded-xl border border-purple-500/20">
-                    <h4 className="text-xl font-semibold text-purple-400 mb-2">
-                      💼 Projects
-                    </h4>
-                    <p className="text-gray-300">50+ completed projects</p>
-                  </div>
-                  <div className="bg-slate-800/50 p-6 rounded-xl border border-purple-500/20">
-                    <h4 className="text-xl font-semibold text-purple-400 mb-2">
-                      😊 Clients
-                    </h4>
-                    <p className="text-gray-300">
-                      30+ satisfied clients worldwide
-                    </p>
-                  </div>
-                </>
+                <div className="bg-slate-800/50 p-4 sm:p-6 rounded-xl border border-purple-500/20">
+                  <p className="text-sm sm:text-base text-gray-400 text-center py-6 sm:py-8">
+                    Add your experience and education from the admin panel to
+                    display them here.
+                  </p>
+                </div>
               )}
             </div>
           </div>
@@ -231,108 +351,77 @@ export default function Home() {
       </section>
 
       {/* Skills Section */}
-      <section id="skills" className="py-20 px-6 bg-slate-900/50">
+      <section
+        id="skills"
+        className="py-12 sm:py-16 md:py-20 px-4 sm:px-6 bg-slate-900/50"
+      >
         <div className="container mx-auto max-w-6xl">
-          <h2 className="text-4xl font-bold text-white mb-12 text-center">
+          <h2 className="text-3xl sm:text-4xl font-bold text-white mb-8 sm:mb-12 text-center">
             My <span className="text-purple-400">Skills</span>
           </h2>
           {about.skills && about.skills.length > 0 ? (
-            <div className="flex flex-wrap gap-4 justify-center">
+            <div className="flex flex-wrap gap-3 sm:gap-4 justify-center">
               {about.skills.map((skill, index) => (
                 <div
                   key={index}
-                  className="bg-gradient-to-br from-purple-500/10 to-pink-500/10 px-6 py-3 rounded-xl border border-purple-500/20 hover:border-purple-500/40 transition"
+                  className="bg-gradient-to-br from-purple-500/10 to-pink-500/10 px-4 sm:px-6 py-2 sm:py-3 rounded-xl border border-purple-500/20 hover:border-purple-500/40 transition"
                 >
-                  <span className="text-lg text-white font-medium">
+                  <span className="text-sm sm:text-base lg:text-lg text-white font-medium">
                     {skill}
                   </span>
                 </div>
               ))}
             </div>
           ) : (
-            <div className="grid md:grid-cols-3 gap-8">
-              <div className="bg-gradient-to-br from-purple-500/10 to-pink-500/10 p-8 rounded-2xl border border-purple-500/20 hover:border-purple-500/40 transition">
-                <div className="text-4xl mb-4">💻</div>
-                <h3 className="text-xl font-semibold text-white mb-4">
-                  Frontend
-                </h3>
-                <ul className="space-y-2 text-gray-300">
-                  <li>• React / Next.js</li>
-                  <li>• TypeScript / JavaScript</li>
-                  <li>• HTML5 / CSS3</li>
-                  <li>• Tailwind CSS</li>
-                  <li>• Responsive Design</li>
-                </ul>
-              </div>
-              <div className="bg-gradient-to-br from-purple-500/10 to-pink-500/10 p-8 rounded-2xl border border-purple-500/20 hover:border-purple-500/40 transition">
-                <div className="text-4xl mb-4">⚙️</div>
-                <h3 className="text-xl font-semibold text-white mb-4">
-                  Backend
-                </h3>
-                <ul className="space-y-2 text-gray-300">
-                  <li>• Node.js / Express</li>
-                  <li>• Python / Django</li>
-                  <li>• RESTful APIs</li>
-                  <li>• Database Design</li>
-                  <li>• Authentication</li>
-                </ul>
-              </div>
-              <div className="bg-gradient-to-br from-purple-500/10 to-pink-500/10 p-8 rounded-2xl border border-purple-500/20 hover:border-purple-500/40 transition">
-                <div className="text-4xl mb-4">🛠️</div>
-                <h3 className="text-xl font-semibold text-white mb-4">
-                  Tools & Others
-                </h3>
-                <ul className="space-y-2 text-gray-300">
-                  <li>• Git / GitHub</li>
-                  <li>• Docker</li>
-                  <li>• AWS / Vercel</li>
-                  <li>• Figma / Design</li>
-                  <li>• Agile / Scrum</li>
-                </ul>
-              </div>
+            <div className="bg-gradient-to-br from-purple-500/10 to-pink-500/10 p-6 sm:p-8 rounded-2xl border border-purple-500/20">
+              <p className="text-sm sm:text-base text-gray-400 text-center py-6 sm:py-8">
+                Add your skills from the admin panel to display them here.
+              </p>
             </div>
           )}
         </div>
       </section>
 
       {/* Projects Section */}
-      <section id="projects" className="py-20 px-6">
+      <section id="projects" className="py-12 sm:py-16 md:py-20 px-4 sm:px-6">
         <div className="container mx-auto max-w-6xl">
-          <h2 className="text-4xl font-bold text-white mb-12 text-center">
+          <h2 className="text-3xl sm:text-4xl font-bold text-white mb-8 sm:mb-12 text-center">
             Featured <span className="text-purple-400">Projects</span>
           </h2>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
             {projects.length > 0 ? (
               projects.map((project) => (
                 <div
                   key={project._id}
                   className="bg-slate-800/50 rounded-2xl overflow-hidden border border-purple-500/20 hover:border-purple-500/40 transition group"
                 >
-                  <div className="h-48 bg-gradient-to-br from-purple-500/20 to-pink-500/20 flex items-center justify-center">
-                    <span className="text-6xl">🚀</span>
+                  <div className="h-40 sm:h-48 bg-gradient-to-br from-purple-500/20 to-pink-500/20 flex items-center justify-center">
+                    <Rocket className="w-20 h-20 sm:w-24 sm:h-24 text-purple-400" />
                   </div>
-                  <div className="p-6">
-                    <h3 className="text-xl font-semibold text-white mb-2">
+                  <div className="p-4 sm:p-6">
+                    <h3 className="text-lg sm:text-xl font-semibold text-white mb-2">
                       {project.title}
                     </h3>
-                    <p className="text-gray-400 mb-4">{project.description}</p>
+                    <p className="text-sm sm:text-base text-gray-400 mb-4">
+                      {project.description}
+                    </p>
                     <div className="flex gap-2 mb-4 flex-wrap">
                       {project.technologies.map((tech, i) => (
                         <span
                           key={i}
-                          className="px-3 py-1 bg-purple-500/20 text-purple-300 rounded-full text-sm"
+                          className="px-2 sm:px-3 py-1 bg-purple-500/20 text-purple-300 rounded-full text-xs sm:text-sm"
                         >
                           {tech}
                         </span>
                       ))}
                     </div>
-                    <div className="flex gap-4">
+                    <div className="flex gap-3 sm:gap-4 flex-wrap">
                       {project.liveUrl && (
                         <a
                           href={project.liveUrl}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-purple-400 hover:text-purple-300 transition"
+                          className="text-sm sm:text-base text-purple-400 hover:text-purple-300 transition"
                         >
                           Live Demo →
                         </a>
@@ -342,7 +431,7 @@ export default function Home() {
                           href={project.githubUrl}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-gray-400 hover:text-gray-300 transition"
+                          className="text-sm sm:text-base text-gray-400 hover:text-gray-300 transition"
                         >
                           GitHub →
                         </a>
@@ -364,13 +453,13 @@ export default function Home() {
       <ContactSection />
 
       {/* Footer */}
-      <footer className="py-8 px-6 border-t border-purple-500/20">
+      <footer className="py-6 sm:py-8 px-4 sm:px-6 border-t border-purple-500/20">
         <div className="container mx-auto max-w-6xl">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <p className="text-gray-400">
-              © 2026 Your Name. All rights reserved.
+            <p className="text-sm sm:text-base text-gray-400 text-center md:text-left">
+              © 2026 {about.displayName}. All rights reserved.
             </p>
-            <div className="flex gap-6 items-center">
+            <div className="flex flex-wrap gap-4 sm:gap-6 items-center justify-center">
               {profile.github && (
                 <a
                   href={profile.github}

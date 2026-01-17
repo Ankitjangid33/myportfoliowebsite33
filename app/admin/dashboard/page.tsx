@@ -78,62 +78,86 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       <div>
-        <h1 className="text-3xl font-bold text-white">Dashboard</h1>
-        <p className="text-gray-400 mt-1">Overview of your portfolio</p>
+        <h1 className="text-2xl sm:text-3xl font-bold text-white">Dashboard</h1>
+        <p className="text-sm sm:text-base text-gray-400 mt-1">
+          Overview of your portfolio
+        </p>
       </div>
 
       {/* Stats */}
-      <div className="grid md:grid-cols-4 gap-6">
-        <div className="bg-slate-800/50 p-6 rounded-xl border border-purple-500/20">
-          <h3 className="text-gray-400 mb-2">Total Projects</h3>
-          <p className="text-3xl font-bold text-white">{projects.length}</p>
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 md:gap-6">
+        <div className="bg-slate-800/50 p-4 sm:p-6 rounded-xl border border-purple-500/20">
+          <h3 className="text-xs sm:text-sm text-gray-400 mb-1 sm:mb-2">
+            Total Projects
+          </h3>
+          <p className="text-2xl sm:text-3xl font-bold text-white">
+            {projects.length}
+          </p>
         </div>
-        <div className="bg-slate-800/50 p-6 rounded-xl border border-purple-500/20">
-          <h3 className="text-gray-400 mb-2">Featured</h3>
-          <p className="text-3xl font-bold text-white">
+        <div className="bg-slate-800/50 p-4 sm:p-6 rounded-xl border border-purple-500/20">
+          <h3 className="text-xs sm:text-sm text-gray-400 mb-1 sm:mb-2">
+            Featured
+          </h3>
+          <p className="text-2xl sm:text-3xl font-bold text-white">
             {projects.filter((p) => p.featured).length}
           </p>
         </div>
-        <div className="bg-slate-800/50 p-6 rounded-xl border border-green-500/20">
-          <h3 className="text-gray-400 mb-2">New Messages</h3>
-          <p className="text-3xl font-bold text-green-400">
+        <div className="bg-slate-800/50 p-4 sm:p-6 rounded-xl border border-green-500/20">
+          <h3 className="text-xs sm:text-sm text-gray-400 mb-1 sm:mb-2">
+            New Messages
+          </h3>
+          <p className="text-2xl sm:text-3xl font-bold text-green-400">
             {contacts.filter((c) => c.status === "new").length}
           </p>
         </div>
-        <div className="bg-slate-800/50 p-6 rounded-xl border border-blue-500/20">
-          <h3 className="text-gray-400 mb-2">Total Contacts</h3>
-          <p className="text-3xl font-bold text-blue-400">{contacts.length}</p>
+        <div className="bg-slate-800/50 p-4 sm:p-6 rounded-xl border border-blue-500/20">
+          <h3 className="text-xs sm:text-sm text-gray-400 mb-1 sm:mb-2">
+            Total Contacts
+          </h3>
+          <p className="text-2xl sm:text-3xl font-bold text-blue-400">
+            {contacts.length}
+          </p>
         </div>
       </div>
 
       {/* Quick Actions */}
-      <div className="bg-slate-800/50 p-6 rounded-xl border border-purple-500/20">
-        <h2 className="text-xl font-bold text-white mb-4">Quick Actions</h2>
-        <div className="grid md:grid-cols-3 gap-4">
+      <div className="bg-slate-800/50 p-4 sm:p-6 rounded-xl border border-purple-500/20">
+        <h2 className="text-lg sm:text-xl font-bold text-white mb-3 sm:mb-4">
+          Quick Actions
+        </h2>
+        <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4">
           <button
             onClick={() => router.push("/admin/projects")}
-            className="p-4 bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition text-left"
+            className="p-3 sm:p-4 bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition text-left"
           >
-            <h3 className="font-semibold mb-1">Manage Projects</h3>
-            <p className="text-sm text-purple-200">
+            <h3 className="text-sm sm:text-base font-semibold mb-1">
+              Manage Projects
+            </h3>
+            <p className="text-xs sm:text-sm text-purple-200">
               View and edit all projects
             </p>
           </button>
           <button
             onClick={() => router.push("/admin/contacts")}
-            className="p-4 bg-green-600 hover:bg-green-700 text-white rounded-lg transition text-left"
+            className="p-3 sm:p-4 bg-green-600 hover:bg-green-700 text-white rounded-lg transition text-left"
           >
-            <h3 className="font-semibold mb-1">View Messages</h3>
-            <p className="text-sm text-green-200">Check contact submissions</p>
+            <h3 className="text-sm sm:text-base font-semibold mb-1">
+              View Messages
+            </h3>
+            <p className="text-xs sm:text-sm text-green-200">
+              Check contact submissions
+            </p>
           </button>
           <button
             onClick={() => window.open("/", "_blank")}
-            className="p-4 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition text-left"
+            className="p-3 sm:p-4 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition text-left sm:col-span-2 md:col-span-1"
           >
-            <h3 className="font-semibold mb-1">View Portfolio</h3>
-            <p className="text-sm text-blue-200">
+            <h3 className="text-sm sm:text-base font-semibold mb-1">
+              View Portfolio
+            </h3>
+            <p className="text-xs sm:text-sm text-blue-200">
               See your live portfolio site
             </p>
           </button>
@@ -141,12 +165,14 @@ export default function DashboardPage() {
       </div>
 
       {/* Recent Projects */}
-      <div className="bg-slate-800/50 p-6 rounded-xl border border-purple-500/20">
-        <div className="flex justify-between items-center mb-4">
-          <h2 className="text-xl font-bold text-white">Recent Projects</h2>
+      <div className="bg-slate-800/50 p-4 sm:p-6 rounded-xl border border-purple-500/20">
+        <div className="flex justify-between items-center mb-3 sm:mb-4">
+          <h2 className="text-lg sm:text-xl font-bold text-white">
+            Recent Projects
+          </h2>
           <button
             onClick={() => router.push("/admin/projects")}
-            className="text-purple-400 hover:text-purple-300 text-sm"
+            className="text-sm text-purple-400 hover:text-purple-300"
           >
             View All →
           </button>
@@ -167,18 +193,18 @@ export default function DashboardPage() {
           />
         )}
 
-        <div className="space-y-4">
+        <div className="space-y-3 sm:space-y-4">
           {projects.slice(0, 3).map((project) => (
             <div
               key={project._id}
-              className="bg-slate-900/50 p-4 rounded-lg border border-purple-500/20"
+              className="bg-slate-900/50 p-3 sm:p-4 rounded-lg border border-purple-500/20"
             >
-              <div className="flex justify-between items-start">
-                <div className="flex-1">
-                  <h3 className="text-lg font-semibold text-white mb-2">
+              <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-3">
+                <div className="flex-1 min-w-0">
+                  <h3 className="text-base sm:text-lg font-semibold text-white mb-2">
                     {project.title}
                   </h3>
-                  <p className="text-gray-400 text-sm mb-2 line-clamp-2">
+                  <p className="text-sm text-gray-400 mb-2 line-clamp-2">
                     {project.description}
                   </p>
                   <div className="flex gap-2 flex-wrap">
@@ -192,13 +218,13 @@ export default function DashboardPage() {
                     ))}
                   </div>
                 </div>
-                <div className="flex gap-2 ml-4">
+                <div className="flex gap-2 sm:ml-4 flex-shrink-0">
                   <button
                     onClick={() => {
                       setEditingProject(project);
                       setShowForm(true);
                     }}
-                    className="px-3 py-1 bg-blue-600 hover:bg-blue-700 text-white rounded text-sm transition"
+                    className="px-3 py-1.5 sm:py-1 text-xs sm:text-sm bg-blue-600 hover:bg-blue-700 text-white rounded transition"
                   >
                     Edit
                   </button>
@@ -208,11 +234,13 @@ export default function DashboardPage() {
           ))}
 
           {projects.length === 0 && (
-            <div className="text-center py-8">
-              <p className="text-gray-400">No projects yet</p>
+            <div className="text-center py-6 sm:py-8">
+              <p className="text-sm sm:text-base text-gray-400">
+                No projects yet
+              </p>
               <button
                 onClick={() => router.push("/admin/projects")}
-                className="mt-4 px-6 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition"
+                className="mt-3 sm:mt-4 px-4 sm:px-6 py-2 text-sm sm:text-base bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition"
               >
                 Create Your First Project
               </button>
@@ -273,17 +301,17 @@ function ProjectForm({
   };
 
   return (
-    <div className="bg-slate-900/50 p-6 rounded-lg border border-purple-500/20 mb-6">
-      <h3 className="text-xl font-bold text-white mb-4">
+    <div className="bg-slate-900/50 p-4 sm:p-6 rounded-lg border border-purple-500/20 mb-4 sm:mb-6">
+      <h3 className="text-lg sm:text-xl font-bold text-white mb-3 sm:mb-4">
         {project ? "Edit Project" : "Add New Project"}
       </h3>
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={handleSubmit} className="space-y-3 sm:space-y-4">
         <input
           type="text"
           placeholder="Project Title"
           value={formData.title}
           onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-          className="w-full px-4 py-3 bg-slate-800 border border-purple-500/20 rounded-lg text-white focus:outline-none focus:border-purple-500"
+          className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base bg-slate-800 border border-purple-500/20 rounded-lg text-white focus:outline-none focus:border-purple-500"
           required
         />
         <textarea
@@ -292,7 +320,7 @@ function ProjectForm({
           onChange={(e) =>
             setFormData({ ...formData, description: e.target.value })
           }
-          className="w-full px-4 py-3 bg-slate-800 border border-purple-500/20 rounded-lg text-white focus:outline-none focus:border-purple-500"
+          className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base bg-slate-800 border border-purple-500/20 rounded-lg text-white focus:outline-none focus:border-purple-500"
           rows={3}
           required
         />
@@ -303,7 +331,7 @@ function ProjectForm({
           onChange={(e) =>
             setFormData({ ...formData, technologies: e.target.value })
           }
-          className="w-full px-4 py-3 bg-slate-800 border border-purple-500/20 rounded-lg text-white focus:outline-none focus:border-purple-500"
+          className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base bg-slate-800 border border-purple-500/20 rounded-lg text-white focus:outline-none focus:border-purple-500"
         />
         <input
           type="url"
@@ -312,7 +340,7 @@ function ProjectForm({
           onChange={(e) =>
             setFormData({ ...formData, liveUrl: e.target.value })
           }
-          className="w-full px-4 py-3 bg-slate-800 border border-purple-500/20 rounded-lg text-white focus:outline-none focus:border-purple-500"
+          className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base bg-slate-800 border border-purple-500/20 rounded-lg text-white focus:outline-none focus:border-purple-500"
         />
         <input
           type="url"
@@ -321,9 +349,9 @@ function ProjectForm({
           onChange={(e) =>
             setFormData({ ...formData, githubUrl: e.target.value })
           }
-          className="w-full px-4 py-3 bg-slate-800 border border-purple-500/20 rounded-lg text-white focus:outline-none focus:border-purple-500"
+          className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base bg-slate-800 border border-purple-500/20 rounded-lg text-white focus:outline-none focus:border-purple-500"
         />
-        <label className="flex items-center gap-2 text-white cursor-pointer">
+        <label className="flex items-center gap-2 text-sm sm:text-base text-white cursor-pointer">
           <input
             type="checkbox"
             checked={formData.featured}
@@ -334,18 +362,18 @@ function ProjectForm({
           />
           Featured Project
         </label>
-        <div className="flex gap-4">
+        <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
           <button
             type="submit"
             disabled={loading}
-            className="px-6 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition disabled:opacity-50"
+            className="px-4 sm:px-6 py-2 text-sm sm:text-base bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition disabled:opacity-50"
           >
             {loading ? "Saving..." : "Save"}
           </button>
           <button
             type="button"
             onClick={onClose}
-            className="px-6 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded-lg transition"
+            className="px-4 sm:px-6 py-2 text-sm sm:text-base bg-gray-600 hover:bg-gray-700 text-white rounded-lg transition"
           >
             Cancel
           </button>

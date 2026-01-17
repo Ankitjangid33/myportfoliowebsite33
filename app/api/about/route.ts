@@ -19,6 +19,9 @@ export async function GET(req: NextRequest) {
           skills: [],
           experience: "",
           education: "",
+          displayName: "",
+          initials: "",
+          profileImage: "",
         },
       });
     }
@@ -31,6 +34,9 @@ export async function GET(req: NextRequest) {
         skills: [],
         experience: "",
         education: "",
+        displayName: "",
+        initials: "",
+        profileImage: "",
       },
     });
   } catch (error) {
@@ -50,7 +56,16 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const { bio, title, skills, experience, education } = await req.json();
+    const {
+      bio,
+      title,
+      skills,
+      experience,
+      education,
+      displayName,
+      initials,
+      profileImage,
+    } = await req.json();
 
     await connectDB();
     const user = await User.findOneAndUpdate(
@@ -63,6 +78,9 @@ export async function POST(req: NextRequest) {
             skills,
             experience,
             education,
+            displayName,
+            initials,
+            profileImage,
           },
         },
       },

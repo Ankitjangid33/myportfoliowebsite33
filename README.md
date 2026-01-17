@@ -4,12 +4,14 @@ A modern, full-stack portfolio website built with Next.js, TypeScript, MongoDB, 
 
 ## Features
 
-- 🎨 Modern, responsive design with gradient themes
-- 🔐 Secure admin panel with authentication
-- 📊 MongoDB database integration
-- ✏️ Full CRUD operations for projects
-- 🚀 Built with Next.js 15 and React 19
-- 💅 Styled with Tailwind CSS
+- Modern, responsive design with gradient themes
+- Secure admin panel with authentication
+- MongoDB database integration
+- Full CRUD operations for projects
+- **Dynamic About section with profile customization**
+- **Cloudinary image upload for profile pictures**
+- Built with Next.js 15 and React 19
+- Styled with Tailwind CSS
 
 ## Getting Started
 
@@ -35,7 +37,14 @@ NEXTAUTH_SECRET=your-secret-key-change-this-in-production
 NEXTAUTH_URL=http://localhost:3000
 ADMIN_EMAIL=admin@example.com
 ADMIN_PASSWORD=admin123
+
+# Cloudinary Configuration (for image uploads)
+NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME=your_cloud_name
+CLOUDINARY_API_KEY=your_api_key
+CLOUDINARY_API_SECRET=your_api_secret
 ```
+
+**For Cloudinary setup**, see [CLOUDINARY_SETUP.md](./CLOUDINARY_SETUP.md)
 
 3. Start MongoDB (if running locally):
 
@@ -78,12 +87,12 @@ Default credentials (change in `.env.local`):
 
 ### Admin Features
 
-- View all projects
-- Add new projects
-- Edit existing projects
-- Delete projects
-- Mark projects as featured
-- Real-time stats dashboard
+- **Dashboard**: View stats and recent activity
+- **Projects**: Full CRUD operations for portfolio projects
+- **About**: Update bio, skills, experience, education
+- **Profile**: Upload profile picture, set display name and initials
+- **Contacts**: Manage contact form submissions
+- **Settings**: Update profile links and account settings
 
 ## Project Structure
 
@@ -141,6 +150,7 @@ Default credentials (change in `.env.local`):
 - NextAuth.js
 - Tailwind CSS
 - bcryptjs
+- Cloudinary (image uploads)
 
 ## License
 

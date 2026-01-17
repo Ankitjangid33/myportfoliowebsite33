@@ -30,6 +30,9 @@ const UserSchema = new mongoose.Schema(
       skills: [String],
       experience: String,
       education: String,
+      displayName: String,
+      initials: String,
+      profileImage: String,
     },
     lastPasswordChange: {
       type: Date,
