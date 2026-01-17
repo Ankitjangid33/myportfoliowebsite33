@@ -12,6 +12,7 @@ import {
   X,
   Mail,
   User,
+  FileText,
 } from "lucide-react";
 import { useState } from "react";
 
@@ -30,6 +31,11 @@ const menuItems = [
     name: "About Me",
     href: "/admin/about",
     icon: User,
+  },
+  {
+    name: "Resume",
+    href: "/admin/resume",
+    icon: FileText,
   },
   {
     name: "Contacts",
