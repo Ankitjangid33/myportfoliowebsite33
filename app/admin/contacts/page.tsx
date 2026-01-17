@@ -111,8 +111,78 @@ export default function ContactsPage() {
 
   if (status === "loading" || loading) {
     return (
-      <div className="flex items-center justify-center min-h-[60vh]">
-        <div className="text-white text-xl">Loading...</div>
+      <div className="space-y-6">
+        <div>
+          <div className="h-9 w-56 bg-slate-700/50 rounded animate-pulse"></div>
+          <div className="h-5 w-72 bg-slate-700/30 rounded mt-2 animate-pulse"></div>
+        </div>
+
+        <div className="grid md:grid-cols-3 gap-6">
+          {[1, 2, 3].map((i) => (
+            <div
+              key={i}
+              className="bg-slate-800/50 p-6 rounded-xl border border-purple-500/20"
+            >
+              <div className="h-5 w-32 bg-slate-700/30 rounded animate-pulse mb-2"></div>
+              <div className="h-9 w-16 bg-slate-700/50 rounded animate-pulse"></div>
+            </div>
+          ))}
+        </div>
+
+        <div className="grid lg:grid-cols-2 gap-6">
+          <div className="space-y-4">
+            {[1, 2, 3].map((i) => (
+              <div
+                key={i}
+                className="bg-slate-800/50 p-6 rounded-xl border border-purple-500/20"
+              >
+                <div className="flex items-start justify-between mb-3">
+                  <div className="flex-1 space-y-2">
+                    <div className="h-6 w-40 bg-slate-700/50 rounded animate-pulse"></div>
+                    <div className="h-4 w-48 bg-slate-700/30 rounded animate-pulse"></div>
+                  </div>
+                  <div className="h-6 w-16 bg-slate-700/30 rounded-full animate-pulse"></div>
+                </div>
+                <div className="space-y-2 mb-3">
+                  <div className="h-4 w-full bg-slate-700/30 rounded animate-pulse"></div>
+                  <div className="h-4 w-3/4 bg-slate-700/30 rounded animate-pulse"></div>
+                </div>
+                <div className="flex items-center justify-between">
+                  <div className="h-3 w-32 bg-slate-700/20 rounded animate-pulse"></div>
+                  <div className="h-4 w-4 bg-slate-700/30 rounded animate-pulse"></div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div className="lg:sticky lg:top-6 h-fit">
+            <div className="bg-slate-800/50 p-6 rounded-xl border border-purple-500/20">
+              <div className="flex items-start justify-between mb-6">
+                <div className="space-y-2 flex-1">
+                  <div className="h-8 w-48 bg-slate-700/50 rounded animate-pulse"></div>
+                  <div className="h-5 w-56 bg-slate-700/30 rounded animate-pulse"></div>
+                </div>
+                <div className="h-6 w-16 bg-slate-700/30 rounded-full animate-pulse"></div>
+              </div>
+              <div className="space-y-4">
+                <div className="space-y-2">
+                  <div className="h-4 w-20 bg-slate-700/30 rounded animate-pulse"></div>
+                  <div className="h-4 w-full bg-slate-700/30 rounded animate-pulse"></div>
+                  <div className="h-4 w-full bg-slate-700/30 rounded animate-pulse"></div>
+                  <div className="h-4 w-2/3 bg-slate-700/30 rounded animate-pulse"></div>
+                </div>
+                <div className="space-y-2">
+                  <div className="h-4 w-20 bg-slate-700/30 rounded animate-pulse"></div>
+                  <div className="h-5 w-40 bg-slate-700/30 rounded animate-pulse"></div>
+                </div>
+                <div className="flex gap-3">
+                  <div className="h-10 flex-1 bg-slate-700/30 rounded-lg animate-pulse"></div>
+                  <div className="h-10 w-20 bg-slate-700/50 rounded-lg animate-pulse"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     );
   }

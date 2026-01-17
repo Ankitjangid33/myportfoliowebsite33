@@ -228,8 +228,32 @@ export default function SettingsPage() {
 
   if (status === "loading") {
     return (
-      <div className="flex items-center justify-center min-h-[60vh]">
-        <div className="text-white text-xl">Loading...</div>
+      <div className="space-y-6">
+        <div>
+          <div className="h-9 w-32 bg-slate-700/50 rounded animate-pulse"></div>
+          <div className="h-5 w-48 bg-slate-700/30 rounded mt-2 animate-pulse"></div>
+        </div>
+
+        <div className="flex gap-2 border-b border-purple-500/20 pb-2">
+          <div className="h-10 w-24 bg-slate-700/50 rounded animate-pulse"></div>
+          <div className="h-10 w-24 bg-slate-700/30 rounded animate-pulse"></div>
+        </div>
+
+        <div className="bg-slate-800/50 p-6 rounded-xl border border-purple-500/20 space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {[1, 2, 3, 4, 5].map((i) => (
+              <div key={i} className="space-y-2">
+                <div className="h-5 w-24 bg-slate-700/50 rounded animate-pulse"></div>
+                <div className="h-12 w-full bg-slate-700/30 rounded-lg animate-pulse"></div>
+              </div>
+            ))}
+          </div>
+          <div className="space-y-2">
+            <div className="h-5 w-20 bg-slate-700/50 rounded animate-pulse"></div>
+            <div className="h-20 w-full bg-slate-700/30 rounded-lg animate-pulse"></div>
+          </div>
+          <div className="h-12 w-36 bg-slate-700/50 rounded-lg animate-pulse"></div>
+        </div>
       </div>
     );
   }

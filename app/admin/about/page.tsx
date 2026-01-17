@@ -145,8 +145,86 @@ export default function AboutPage() {
 
   if (status === "loading" || isLoading) {
     return (
-      <div className="flex items-center justify-center min-h-[60vh]">
-        <div className="text-white text-xl">Loading...</div>
+      <div className="space-y-6">
+        <div className="flex justify-between items-start">
+          <div>
+            <div className="h-9 w-40 bg-slate-700/50 rounded animate-pulse"></div>
+            <div className="h-5 w-64 bg-slate-700/30 rounded mt-2 animate-pulse"></div>
+          </div>
+          <div className="h-10 w-36 bg-slate-700/50 rounded-lg animate-pulse"></div>
+        </div>
+
+        <div className="bg-slate-800/50 p-6 rounded-xl border border-purple-500/20 space-y-6">
+          <div className="grid md:grid-cols-2 gap-6">
+            <div className="space-y-2">
+              <div className="h-5 w-32 bg-slate-700/50 rounded animate-pulse"></div>
+              <div className="h-12 w-full bg-slate-700/30 rounded-lg animate-pulse"></div>
+              <div className="h-4 w-48 bg-slate-700/20 rounded animate-pulse"></div>
+            </div>
+            <div className="space-y-2">
+              <div className="h-5 w-32 bg-slate-700/50 rounded animate-pulse"></div>
+              <div className="h-12 w-full bg-slate-700/30 rounded-lg animate-pulse"></div>
+              <div className="h-4 w-40 bg-slate-700/20 rounded animate-pulse"></div>
+            </div>
+          </div>
+
+          <div className="space-y-3">
+            <div className="h-5 w-32 bg-slate-700/50 rounded animate-pulse"></div>
+            <div className="flex items-center gap-4">
+              <div className="w-20 h-20 rounded-full bg-slate-700/50 animate-pulse"></div>
+              <div className="h-10 w-32 bg-slate-700/30 rounded-lg animate-pulse"></div>
+            </div>
+          </div>
+
+          <div className="space-y-2">
+            <div className="h-5 w-40 bg-slate-700/50 rounded animate-pulse"></div>
+            <div className="h-12 w-full bg-slate-700/30 rounded-lg animate-pulse"></div>
+          </div>
+
+          <div className="space-y-2">
+            <div className="h-5 w-24 bg-slate-700/50 rounded animate-pulse"></div>
+            <div className="h-12 w-full bg-slate-700/30 rounded-lg animate-pulse"></div>
+          </div>
+
+          <div className="space-y-2">
+            <div className="h-5 w-16 bg-slate-700/50 rounded animate-pulse"></div>
+            <div className="h-32 w-full bg-slate-700/30 rounded-lg animate-pulse"></div>
+          </div>
+
+          <div className="space-y-2">
+            <div className="h-5 w-20 bg-slate-700/50 rounded animate-pulse"></div>
+            <div className="h-12 w-full bg-slate-700/30 rounded-lg animate-pulse"></div>
+          </div>
+
+          <div className="space-y-2">
+            <div className="h-5 w-28 bg-slate-700/50 rounded animate-pulse"></div>
+            <div className="h-28 w-full bg-slate-700/30 rounded-lg animate-pulse"></div>
+          </div>
+
+          <div className="space-y-2">
+            <div className="h-5 w-24 bg-slate-700/50 rounded animate-pulse"></div>
+            <div className="h-24 w-full bg-slate-700/30 rounded-lg animate-pulse"></div>
+          </div>
+
+          <div className="h-12 w-36 bg-slate-700/50 rounded-lg animate-pulse"></div>
+        </div>
+
+        <div className="bg-slate-800/50 p-6 rounded-xl border border-purple-500/20">
+          <div className="h-7 w-24 bg-slate-700/50 rounded animate-pulse mb-4"></div>
+          <div className="space-y-4">
+            <div className="flex items-center gap-4">
+              <div className="w-24 h-24 rounded-full bg-slate-700/50 animate-pulse"></div>
+              <div className="space-y-2">
+                <div className="h-5 w-32 bg-slate-700/30 rounded animate-pulse"></div>
+                <div className="h-4 w-40 bg-slate-700/20 rounded animate-pulse"></div>
+              </div>
+            </div>
+            <div className="space-y-2">
+              <div className="h-4 w-full bg-slate-700/30 rounded animate-pulse"></div>
+              <div className="h-4 w-3/4 bg-slate-700/30 rounded animate-pulse"></div>
+            </div>
+          </div>
+        </div>
       </div>
     );
   }

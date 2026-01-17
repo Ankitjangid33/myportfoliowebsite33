@@ -61,8 +61,52 @@ export default function ProjectsPage() {
 
   if (status === "loading" || loading) {
     return (
-      <div className="flex items-center justify-center min-h-[60vh]">
-        <div className="text-white text-xl">Loading...</div>
+      <div className="space-y-6">
+        <div className="flex justify-between items-center">
+          <div>
+            <div className="h-9 w-48 bg-slate-700/50 rounded animate-pulse"></div>
+            <div className="h-5 w-64 bg-slate-700/30 rounded mt-2 animate-pulse"></div>
+          </div>
+          <div className="h-12 w-36 bg-slate-700/50 rounded-lg animate-pulse"></div>
+        </div>
+
+        <div className="grid gap-4">
+          {[1, 2, 3].map((i) => (
+            <div
+              key={i}
+              className="bg-slate-800/50 p-6 rounded-xl border border-purple-500/20"
+            >
+              <div className="flex justify-between items-start">
+                <div className="flex-1">
+                  <div className="flex items-center gap-3 mb-2">
+                    <div className="h-7 w-48 bg-slate-700/50 rounded animate-pulse"></div>
+                    <div className="h-6 w-20 bg-slate-700/30 rounded animate-pulse"></div>
+                  </div>
+                  <div className="space-y-2 mb-3">
+                    <div className="h-4 w-full bg-slate-700/30 rounded animate-pulse"></div>
+                    <div className="h-4 w-3/4 bg-slate-700/30 rounded animate-pulse"></div>
+                  </div>
+                  <div className="flex gap-2 flex-wrap mb-3">
+                    {[1, 2, 3, 4].map((j) => (
+                      <div
+                        key={j}
+                        className="h-7 w-20 bg-slate-700/30 rounded-full animate-pulse"
+                      ></div>
+                    ))}
+                  </div>
+                  <div className="flex gap-4">
+                    <div className="h-5 w-24 bg-slate-700/30 rounded animate-pulse"></div>
+                    <div className="h-5 w-24 bg-slate-700/30 rounded animate-pulse"></div>
+                  </div>
+                </div>
+                <div className="flex gap-2 ml-4">
+                  <div className="h-10 w-16 bg-slate-700/50 rounded-lg animate-pulse"></div>
+                  <div className="h-10 w-20 bg-slate-700/50 rounded-lg animate-pulse"></div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     );
   }
@@ -159,7 +203,7 @@ export default function ProjectsPage() {
                     setShowForm(true);
                   }}
                   className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition"
-                >  
+                >
                   Edit
                 </button>
                 <button
