@@ -3,7 +3,7 @@ import { getServerSession } from "next-auth/next";
 import bcrypt from "bcryptjs";
 import connectDB from "@/lib/mongodb";
 import User from "@/models/User";
-import { authOptions } from "../[...nextauth]/route";
+import { authOptions } from "@/lib/auth";
 
 export async function POST(request: NextRequest) {
   try {

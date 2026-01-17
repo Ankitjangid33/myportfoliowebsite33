@@ -94,11 +94,11 @@ export default function ContactSection() {
         <div className="grid md:grid-cols-2 gap-12">
           <div>
             <h3 className="text-2xl font-semibold text-white mb-6">
-              Let's Work Together
+              Let&apos;s Work Together
             </h3>
             <p className="text-gray-300 mb-8">
-              I'm always open to discussing new projects, creative ideas, or
-              opportunities to be part of your vision.
+              I&apos;m always open to discussing new projects, creative ideas,
+              or opportunities to be part of your vision.
             </p>
             <div className="space-y-4">
               <div className="flex items-center gap-4">
@@ -143,7 +143,7 @@ export default function ContactSection() {
           <form onSubmit={handleSubmit} className="space-y-4">
             {status === "success" && (
               <div className="p-4 bg-green-500/20 border border-green-500/30 rounded-lg text-green-400 text-sm">
-                ✓ Message sent successfully! I'll get back to you soon.
+                ✓ Message sent successfully! I&apos;ll get back to you soon.
               </div>
             )}
             {status === "error" && (

@@ -177,7 +177,7 @@ export default function ProjectsPage() {
           <div className="bg-slate-800/50 p-12 rounded-xl border border-purple-500/20 text-center">
             <p className="text-gray-400 text-lg">No projects yet</p>
             <p className="text-gray-500 mt-2">
-              Click "Add Project" to create your first project
+              Click &quot;Add Project&quot; to create your first project
             </p>
           </div>
         )}

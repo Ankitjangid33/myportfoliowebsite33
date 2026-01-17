@@ -24,6 +24,13 @@ const UserSchema = new mongoose.Schema(
       address: String,
       mobile: String,
     },
+    about: {
+      bio: String,
+      title: String,
+      skills: [String],
+      experience: String,
+      education: String,
+    },
     lastPasswordChange: {
       type: Date,
       default: null,

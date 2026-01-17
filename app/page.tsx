@@ -19,12 +19,27 @@ interface ProfileData {
   twitter: string;
 }
 
+interface AboutData {
+  bio: string;
+  title: string;
+  skills: string[];
+  experience: string;
+  education: string;
+}
+
 export default function Home() {
   const [projects, setProjects] = useState<Project[]>([]);
   const [profile, setProfile] = useState<ProfileData>({
     linkedin: "",
     github: "",
     twitter: "",
+  });
+  const [about, setAbout] = useState<AboutData>({
+    bio: "",
+    title: "",
+    skills: [],
+    experience: "",
+    education: "",
   });
 
   useEffect(() => {
@@ -48,6 +63,17 @@ export default function Home() {
             github: data.profile.github || "",
             twitter: data.profile.twitter || "",
           });
+        }
+      })
+      .catch(console.error);
+  }, []);
+
+  useEffect(() => {
+    fetch("/api/about")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success && data.about) {
+          setAbout(data.about);
         }
       })
       .catch(console.error);
@@ -111,13 +137,13 @@ export default function Home() {
             </div>
           </div>
           <h1 className="text-5xl md:text-7xl font-bold text-white mb-4">
-            Hi, I'm{" "}
+            Hi, I&apos;m{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600">
               Your Name
             </span>
           </h1>
           <p className="text-xl md:text-2xl text-gray-300 mb-8">
-            Full Stack Web Developer | UI/UX Enthusiast
+            {about.title || "Full Stack Web Developer | UI/UX Enthusiast"}
           </p>
           <div className="flex gap-4 justify-center">
             <a
@@ -147,38 +173,58 @@ export default function Home() {
               <h3 className="text-2xl font-semibold text-white mb-4">
                 Who I Am
               </h3>
-              <p className="text-gray-300 leading-relaxed mb-4">
-                I'm a passionate web developer with expertise in creating
-                modern, responsive, and user-friendly websites. With a strong
-                foundation in both frontend and backend technologies, I bring
-                ideas to life through clean code and creative design.
-              </p>
-              <p className="text-gray-300 leading-relaxed">
-                I love solving complex problems and continuously learning new
-                technologies to stay at the forefront of web development.
+              <p className="text-gray-300 leading-relaxed whitespace-pre-line">
+                {about.bio ||
+                  "I&apos;m a passionate web developer with expertise in creating modern, responsive, and user-friendly websites. With a strong foundation in both frontend and backend technologies, I bring ideas to life through clean code and creative design.\n\nI love solving complex problems and continuously learning new technologies to stay at the forefront of web development."}
               </p>
             </div>
             <div className="space-y-4">
-              <div className="bg-slate-800/50 p-6 rounded-xl border border-purple-500/20">
-                <h4 className="text-xl font-semibold text-purple-400 mb-2">
-                  🎯 Experience
-                </h4>
-                <p className="text-gray-300">
-                  5+ years building web applications
-                </p>
-              </div>
-              <div className="bg-slate-800/50 p-6 rounded-xl border border-purple-500/20">
-                <h4 className="text-xl font-semibold text-purple-400 mb-2">
-                  💼 Projects
-                </h4>
-                <p className="text-gray-300">50+ completed projects</p>
-              </div>
-              <div className="bg-slate-800/50 p-6 rounded-xl border border-purple-500/20">
-                <h4 className="text-xl font-semibold text-purple-400 mb-2">
-                  😊 Clients
-                </h4>
-                <p className="text-gray-300">30+ satisfied clients worldwide</p>
-              </div>
+              {about.experience && (
+                <div className="bg-slate-800/50 p-6 rounded-xl border border-purple-500/20">
+                  <h4 className="text-xl font-semibold text-purple-400 mb-2">
+                    🎯 Experience
+                  </h4>
+                  <p className="text-gray-300 whitespace-pre-line">
+                    {about.experience}
+                  </p>
+                </div>
+              )}
+              {about.education && (
+                <div className="bg-slate-800/50 p-6 rounded-xl border border-purple-500/20">
+                  <h4 className="text-xl font-semibold text-purple-400 mb-2">
+                    🎓 Education
+                  </h4>
+                  <p className="text-gray-300 whitespace-pre-line">
+                    {about.education}
+                  </p>
+                </div>
+              )}
+              {!about.experience && !about.education && (
+                <>
+                  <div className="bg-slate-800/50 p-6 rounded-xl border border-purple-500/20">
+                    <h4 className="text-xl font-semibold text-purple-400 mb-2">
+                      🎯 Experience
+                    </h4>
+                    <p className="text-gray-300">
+                      5+ years building web applications
+                    </p>
+                  </div>
+                  <div className="bg-slate-800/50 p-6 rounded-xl border border-purple-500/20">
+                    <h4 className="text-xl font-semibold text-purple-400 mb-2">
+                      💼 Projects
+                    </h4>
+                    <p className="text-gray-300">50+ completed projects</p>
+                  </div>
+                  <div className="bg-slate-800/50 p-6 rounded-xl border border-purple-500/20">
+                    <h4 className="text-xl font-semibold text-purple-400 mb-2">
+                      😊 Clients
+                    </h4>
+                    <p className="text-gray-300">
+                      30+ satisfied clients worldwide
+                    </p>
+                  </div>
+                </>
+              )}
             </div>
           </div>
         </div>
@@ -190,45 +236,62 @@ export default function Home() {
           <h2 className="text-4xl font-bold text-white mb-12 text-center">
             My <span className="text-purple-400">Skills</span>
           </h2>
-          <div className="grid md:grid-cols-3 gap-8">
-            <div className="bg-gradient-to-br from-purple-500/10 to-pink-500/10 p-8 rounded-2xl border border-purple-500/20 hover:border-purple-500/40 transition">
-              <div className="text-4xl mb-4">💻</div>
-              <h3 className="text-xl font-semibold text-white mb-4">
-                Frontend
-              </h3>
-              <ul className="space-y-2 text-gray-300">
-                <li>• React / Next.js</li>
-                <li>• TypeScript / JavaScript</li>
-                <li>• HTML5 / CSS3</li>
-                <li>• Tailwind CSS</li>
-                <li>• Responsive Design</li>
-              </ul>
+          {about.skills && about.skills.length > 0 ? (
+            <div className="flex flex-wrap gap-4 justify-center">
+              {about.skills.map((skill, index) => (
+                <div
+                  key={index}
+                  className="bg-gradient-to-br from-purple-500/10 to-pink-500/10 px-6 py-3 rounded-xl border border-purple-500/20 hover:border-purple-500/40 transition"
+                >
+                  <span className="text-lg text-white font-medium">
+                    {skill}
+                  </span>
+                </div>
+              ))}
             </div>
-            <div className="bg-gradient-to-br from-purple-500/10 to-pink-500/10 p-8 rounded-2xl border border-purple-500/20 hover:border-purple-500/40 transition">
-              <div className="text-4xl mb-4">⚙️</div>
-              <h3 className="text-xl font-semibold text-white mb-4">Backend</h3>
-              <ul className="space-y-2 text-gray-300">
-                <li>• Node.js / Express</li>
-                <li>• Python / Django</li>
-                <li>• RESTful APIs</li>
-                <li>• Database Design</li>
-                <li>• Authentication</li>
-              </ul>
+          ) : (
+            <div className="grid md:grid-cols-3 gap-8">
+              <div className="bg-gradient-to-br from-purple-500/10 to-pink-500/10 p-8 rounded-2xl border border-purple-500/20 hover:border-purple-500/40 transition">
+                <div className="text-4xl mb-4">💻</div>
+                <h3 className="text-xl font-semibold text-white mb-4">
+                  Frontend
+                </h3>
+                <ul className="space-y-2 text-gray-300">
+                  <li>• React / Next.js</li>
+                  <li>• TypeScript / JavaScript</li>
+                  <li>• HTML5 / CSS3</li>
+                  <li>• Tailwind CSS</li>
+                  <li>• Responsive Design</li>
+                </ul>
+              </div>
+              <div className="bg-gradient-to-br from-purple-500/10 to-pink-500/10 p-8 rounded-2xl border border-purple-500/20 hover:border-purple-500/40 transition">
+                <div className="text-4xl mb-4">⚙️</div>
+                <h3 className="text-xl font-semibold text-white mb-4">
+                  Backend
+                </h3>
+                <ul className="space-y-2 text-gray-300">
+                  <li>• Node.js / Express</li>
+                  <li>• Python / Django</li>
+                  <li>• RESTful APIs</li>
+                  <li>• Database Design</li>
+                  <li>• Authentication</li>
+                </ul>
+              </div>
+              <div className="bg-gradient-to-br from-purple-500/10 to-pink-500/10 p-8 rounded-2xl border border-purple-500/20 hover:border-purple-500/40 transition">
+                <div className="text-4xl mb-4">🛠️</div>
+                <h3 className="text-xl font-semibold text-white mb-4">
+                  Tools & Others
+                </h3>
+                <ul className="space-y-2 text-gray-300">
+                  <li>• Git / GitHub</li>
+                  <li>• Docker</li>
+                  <li>• AWS / Vercel</li>
+                  <li>• Figma / Design</li>
+                  <li>• Agile / Scrum</li>
+                </ul>
+              </div>
             </div>
-            <div className="bg-gradient-to-br from-purple-500/10 to-pink-500/10 p-8 rounded-2xl border border-purple-500/20 hover:border-purple-500/40 transition">
-              <div className="text-4xl mb-4">🛠️</div>
-              <h3 className="text-xl font-semibold text-white mb-4">
-                Tools & Others
-              </h3>
-              <ul className="space-y-2 text-gray-300">
-                <li>• Git / GitHub</li>
-                <li>• Docker</li>
-                <li>• AWS / Vercel</li>
-                <li>• Figma / Design</li>
-                <li>• Agile / Scrum</li>
-              </ul>
-            </div>
-          </div>
+          )}
         </div>
       </section>
 

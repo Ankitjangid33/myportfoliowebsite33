@@ -5,7 +5,7 @@ import Contact from "@/models/Contact";
 
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: { id: string } },
+  { params }: { params: Promise<{ id: string }> },
 ) {
   try {
     const session = await getServerSession();
@@ -16,9 +16,10 @@ export async function PATCH(
       );
     }
 
+    const { id } = await params;
     await dbConnect();
     const body = await request.json();
-    const contact = await Contact.findByIdAndUpdate(params.id, body, {
+    const contact = await Contact.findByIdAndUpdate(id, body, {
       new: true,
     });
 
@@ -40,7 +41,7 @@ export async function PATCH(
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } },
+  { params }: { params: Promise<{ id: string }> },
 ) {
   try {
     const session = await getServerSession();
@@ -51,8 +52,9 @@ export async function DELETE(
       );
     }
 
+    const { id } = await params;
     await dbConnect();
-    const contact = await Contact.findByIdAndDelete(params.id);
+    const contact = await Contact.findByIdAndDelete(id);
 
     if (!contact) {
       return NextResponse.json(

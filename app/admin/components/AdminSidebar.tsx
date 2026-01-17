@@ -11,6 +11,7 @@ import {
   Menu,
   X,
   Mail,
+  User,
 } from "lucide-react";
 import { useState } from "react";
 
@@ -24,6 +25,11 @@ const menuItems = [
     name: "Projects",
     href: "/admin/projects",
     icon: FolderKanban,
+  },
+  {
+    name: "About Me",
+    href: "/admin/about",
+    icon: User,
   },
   {
     name: "Contacts",

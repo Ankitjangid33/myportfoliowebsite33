@@ -5,7 +5,7 @@ import Project from "@/models/Project";
 
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } },
+  { params }: { params: Promise<{ id: string }> },
 ) {
   try {
     const session = await getServerSession();
@@ -16,9 +16,10 @@ export async function PUT(
       );
     }
 
+    const { id } = await params;
     await dbConnect();
     const body = await request.json();
-    const project = await Project.findByIdAndUpdate(params.id, body, {
+    const project = await Project.findByIdAndUpdate(id, body, {
       new: true,
     });
 
@@ -40,7 +41,7 @@ export async function PUT(
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } },
+  { params }: { params: Promise<{ id: string }> },
 ) {
   try {
     const session = await getServerSession();
@@ -51,8 +52,9 @@ export async function DELETE(
       );
     }
 
+    const { id } = await params;
     await dbConnect();
-    const project = await Project.findByIdAndDelete(params.id);
+    const project = await Project.findByIdAndDelete(id);
 
     if (!project) {
       return NextResponse.json(
