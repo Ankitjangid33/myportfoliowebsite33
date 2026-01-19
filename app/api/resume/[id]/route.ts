@@ -5,11 +5,12 @@ import Resume from "@/models/Resume";
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } },
+  { params }: { params: Promise<{ id: string }> },
 ) {
   try {
+    const { id } = await params;
     await dbConnect();
-    const resume = await Resume.findById(params.id);
+    const resume = await Resume.findById(id);
 
     if (!resume) {
       return NextResponse.json(
@@ -29,7 +30,7 @@ export async function GET(
 
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } },
+  { params }: { params: Promise<{ id: string }> },
 ) {
   try {
     const session = await getServerSession();
@@ -40,9 +41,10 @@ export async function PUT(
       );
     }
 
+    const { id } = await params;
     await dbConnect();
     const body = await request.json();
-    const resume = await Resume.findByIdAndUpdate(params.id, body, {
+    const resume = await Resume.findByIdAndUpdate(id, body, {
       new: true,
       runValidators: true,
     });
@@ -65,7 +67,7 @@ export async function PUT(
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } },
+  { params }: { params: Promise<{ id: string }> },
 ) {
   try {
     const session = await getServerSession();
@@ -76,8 +78,9 @@ export async function DELETE(
       );
     }
 
+    const { id } = await params;
     await dbConnect();
-    const resume = await Resume.findByIdAndDelete(params.id);
+    const resume = await Resume.findByIdAndDelete(id);
 
     if (!resume) {
       return NextResponse.json(

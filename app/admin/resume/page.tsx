@@ -30,6 +30,7 @@ import {
   AlignmentType,
 } from "docx";
 import { saveAs } from "file-saver";
+import ResumePreview from "../components/ResumePreview";
 
 interface PersonalInfo {
   fullName: string;
@@ -408,178 +409,178 @@ export default function ResumePage() {
             }),
             ...(resume.personalInfo.website
               ? [
-                  new Paragraph({
-                    text: `Website: ${resume.personalInfo.website}`,
-                    alignment: AlignmentType.CENTER,
-                    spacing: { after: 100 },
-                  }),
-                ]
+                new Paragraph({
+                  text: `Website: ${resume.personalInfo.website}`,
+                  alignment: AlignmentType.CENTER,
+                  spacing: { after: 100 },
+                }),
+              ]
               : []),
             ...(resume.personalInfo.linkedin
               ? [
-                  new Paragraph({
-                    text: `LinkedIn: ${resume.personalInfo.linkedin}`,
-                    alignment: AlignmentType.CENTER,
-                    spacing: { after: 100 },
-                  }),
-                ]
+                new Paragraph({
+                  text: `LinkedIn: ${resume.personalInfo.linkedin}`,
+                  alignment: AlignmentType.CENTER,
+                  spacing: { after: 100 },
+                }),
+              ]
               : []),
             ...(resume.personalInfo.github
               ? [
-                  new Paragraph({
-                    text: `GitHub: ${resume.personalInfo.github}`,
-                    alignment: AlignmentType.CENTER,
-                    spacing: { after: 300 },
-                  }),
-                ]
+                new Paragraph({
+                  text: `GitHub: ${resume.personalInfo.github}`,
+                  alignment: AlignmentType.CENTER,
+                  spacing: { after: 300 },
+                }),
+              ]
               : []),
 
             // Summary
             ...(resume.personalInfo.summary
               ? [
-                  new Paragraph({
-                    text: "SUMMARY",
-                    heading: HeadingLevel.HEADING_2,
-                    spacing: { before: 200, after: 200 },
-                  }),
-                  new Paragraph({
-                    text: resume.personalInfo.summary,
-                    spacing: { after: 300 },
-                  }),
-                ]
+                new Paragraph({
+                  text: "SUMMARY",
+                  heading: HeadingLevel.HEADING_2,
+                  spacing: { before: 200, after: 200 },
+                }),
+                new Paragraph({
+                  text: resume.personalInfo.summary,
+                  spacing: { after: 300 },
+                }),
+              ]
               : []),
 
             // Experience
             ...(resume.experience.length > 0
               ? [
+                new Paragraph({
+                  text: "EXPERIENCE",
+                  heading: HeadingLevel.HEADING_2,
+                  spacing: { before: 200, after: 200 },
+                }),
+                ...resume.experience.flatMap((exp) => [
                   new Paragraph({
-                    text: "EXPERIENCE",
-                    heading: HeadingLevel.HEADING_2,
-                    spacing: { before: 200, after: 200 },
+                    children: [
+                      new TextRun({
+                        text: `${exp.position} at ${exp.company}`,
+                        bold: true,
+                      }),
+                    ],
+                    spacing: { after: 100 },
                   }),
-                  ...resume.experience.flatMap((exp) => [
-                    new Paragraph({
-                      children: [
-                        new TextRun({
-                          text: `${exp.position} at ${exp.company}`,
-                          bold: true,
-                        }),
-                      ],
-                      spacing: { after: 100 },
-                    }),
-                    new Paragraph({
-                      text: `${exp.startDate} - ${exp.current ? "Present" : exp.endDate}`,
-                      spacing: { after: 100 },
-                    }),
-                    ...(exp.description
-                      ? [
-                          new Paragraph({
-                            text: exp.description,
-                            spacing: { after: 100 },
-                          }),
-                        ]
-                      : []),
-                    ...exp.achievements.map(
-                      (ach) =>
-                        new Paragraph({
-                          text: `• ${ach}`,
-                          spacing: { after: 100 },
-                        }),
-                    ),
-                    new Paragraph({ text: "", spacing: { after: 200 } }),
-                  ]),
-                ]
+                  new Paragraph({
+                    text: `${exp.startDate} - ${exp.current ? "Present" : exp.endDate}`,
+                    spacing: { after: 100 },
+                  }),
+                  ...(exp.description
+                    ? [
+                      new Paragraph({
+                        text: exp.description,
+                        spacing: { after: 100 },
+                      }),
+                    ]
+                    : []),
+                  ...exp.achievements.map(
+                    (ach) =>
+                      new Paragraph({
+                        text: `• ${ach}`,
+                        spacing: { after: 100 },
+                      }),
+                  ),
+                  new Paragraph({ text: "", spacing: { after: 200 } }),
+                ]),
+              ]
               : []),
 
             // Education
             ...(resume.education.length > 0
               ? [
+                new Paragraph({
+                  text: "EDUCATION",
+                  heading: HeadingLevel.HEADING_2,
+                  spacing: { before: 200, after: 200 },
+                }),
+                ...resume.education.flatMap((edu) => [
                   new Paragraph({
-                    text: "EDUCATION",
-                    heading: HeadingLevel.HEADING_2,
-                    spacing: { before: 200, after: 200 },
+                    children: [
+                      new TextRun({
+                        text: `${edu.degree} in ${edu.field}`,
+                        bold: true,
+                      }),
+                    ],
+                    spacing: { after: 100 },
                   }),
-                  ...resume.education.flatMap((edu) => [
-                    new Paragraph({
-                      children: [
-                        new TextRun({
-                          text: `${edu.degree} in ${edu.field}`,
-                          bold: true,
-                        }),
-                      ],
-                      spacing: { after: 100 },
-                    }),
-                    new Paragraph({
-                      text: edu.institution,
-                      spacing: { after: 100 },
-                    }),
-                    new Paragraph({
-                      text: `${edu.startDate} - ${edu.endDate}${edu.gpa ? ` | GPA: ${edu.gpa}` : ""}`,
-                      spacing: { after: 200 },
-                    }),
-                  ]),
-                ]
+                  new Paragraph({
+                    text: edu.institution,
+                    spacing: { after: 100 },
+                  }),
+                  new Paragraph({
+                    text: `${edu.startDate} - ${edu.endDate}${edu.gpa ? ` | GPA: ${edu.gpa}` : ""}`,
+                    spacing: { after: 200 },
+                  }),
+                ]),
+              ]
               : []),
 
             // Skills
             ...(resume.skills.length > 0
               ? [
-                  new Paragraph({
-                    text: "SKILLS",
-                    heading: HeadingLevel.HEADING_2,
-                    spacing: { before: 200, after: 200 },
-                  }),
-                  ...resume.skills.map(
-                    (skill) =>
-                      new Paragraph({
-                        text: `${skill.category}: ${skill.skills.join(", ")}`,
-                        spacing: { after: 100 },
-                      }),
-                  ),
-                ]
+                new Paragraph({
+                  text: "SKILLS",
+                  heading: HeadingLevel.HEADING_2,
+                  spacing: { before: 200, after: 200 },
+                }),
+                ...resume.skills.map(
+                  (skill) =>
+                    new Paragraph({
+                      text: `${skill.category}: ${skill.skills.join(", ")}`,
+                      spacing: { after: 100 },
+                    }),
+                ),
+              ]
               : []),
 
             // Certifications
             ...(resume.certifications.length > 0
               ? [
+                new Paragraph({
+                  text: "CERTIFICATIONS",
+                  heading: HeadingLevel.HEADING_2,
+                  spacing: { before: 200, after: 200 },
+                }),
+                ...resume.certifications.flatMap((cert) => [
                   new Paragraph({
-                    text: "CERTIFICATIONS",
-                    heading: HeadingLevel.HEADING_2,
-                    spacing: { before: 200, after: 200 },
+                    text: `${cert.name} - ${cert.issuer} (${cert.date})`,
+                    spacing: { after: 100 },
                   }),
-                  ...resume.certifications.flatMap((cert) => [
-                    new Paragraph({
-                      text: `${cert.name} - ${cert.issuer} (${cert.date})`,
-                      spacing: { after: 100 },
-                    }),
-                    ...(cert.url
-                      ? [
-                          new Paragraph({
-                            text: cert.url,
-                            spacing: { after: 100 },
-                          }),
-                        ]
-                      : []),
-                  ]),
-                ]
+                  ...(cert.url
+                    ? [
+                      new Paragraph({
+                        text: cert.url,
+                        spacing: { after: 100 },
+                      }),
+                    ]
+                    : []),
+                ]),
+              ]
               : []),
 
             // Languages
             ...(resume.languages.length > 0
               ? [
-                  new Paragraph({
-                    text: "LANGUAGES",
-                    heading: HeadingLevel.HEADING_2,
-                    spacing: { before: 200, after: 200 },
-                  }),
-                  ...resume.languages.map(
-                    (lang) =>
-                      new Paragraph({
-                        text: `${lang.language}: ${lang.proficiency}`,
-                        spacing: { after: 100 },
-                      }),
-                  ),
-                ]
+                new Paragraph({
+                  text: "LANGUAGES",
+                  heading: HeadingLevel.HEADING_2,
+                  spacing: { before: 200, after: 200 },
+                }),
+                ...resume.languages.map(
+                  (lang) =>
+                    new Paragraph({
+                      text: `${lang.language}: ${lang.proficiency}`,
+                      spacing: { after: 100 },
+                    }),
+                ),
+              ]
               : []),
           ],
         },
@@ -707,8 +708,55 @@ export default function ResumePage() {
 
   if (status === "loading" || loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <Loader2 className="w-8 h-8 text-purple-500 animate-spin" />
+      <div className="space-y-6">
+        {/* Header Skeleton */}
+        <div className="flex justify-between items-center">
+          <div>
+            <div className="h-9 w-56 bg-slate-700/50 rounded-lg mb-2 animate-pulse"></div>
+            <div className="h-5 w-72 bg-slate-700/30 rounded animate-pulse"></div>
+          </div>
+          <div className="h-12 w-36 bg-slate-700/50 rounded-lg animate-pulse"></div>
+        </div>
+
+        {/* Resume Cards Skeleton */}
+        <div className="grid gap-6">
+          {[1, 2].map((i) => (
+            <div
+              key={i}
+              className="bg-slate-800/50 p-6 rounded-xl border border-purple-500/20"
+            >
+              {/* Header Section */}
+              <div className="flex justify-between items-start mb-4">
+                <div className="flex-1">
+                  <div className="h-8 w-48 bg-slate-700/50 rounded mb-2 animate-pulse"></div>
+                  <div className="h-5 w-64 bg-slate-700/30 rounded mb-2 animate-pulse"></div>
+                  <div className="h-4 w-40 bg-slate-700/20 rounded animate-pulse"></div>
+                </div>
+                <div className="flex gap-2">
+                  <div className="h-10 w-24 bg-slate-700/50 rounded-lg animate-pulse"></div>
+                  <div className="h-10 w-10 bg-slate-700/50 rounded-lg animate-pulse"></div>
+                  <div className="h-10 w-10 bg-slate-700/50 rounded-lg animate-pulse"></div>
+                </div>
+              </div>
+
+              {/* Stats Grid Skeleton */}
+              <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4 mt-4">
+                {[1, 2, 3, 4].map((j) => (
+                  <div
+                    key={j}
+                    className="bg-slate-900/50 p-4 rounded-lg"
+                  >
+                    <div className="flex items-center gap-2 mb-2">
+                      <div className="w-4 h-4 bg-slate-700/50 rounded animate-pulse"></div>
+                      <div className="h-4 w-24 bg-slate-700/30 rounded animate-pulse"></div>
+                    </div>
+                    <div className="h-8 w-12 bg-slate-700/50 rounded animate-pulse"></div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     );
   }
@@ -753,8 +801,13 @@ export default function ResumePage() {
 
             <form onSubmit={handleSubmit} className="flex-1 overflow-hidden">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 h-full">
-                {/* Left Side - Form Fields */}
-                <div className="space-y-6 overflow-y-auto max-h-[calc(90vh-120px)] pr-4">
+                {/* Left Side - Resume Preview */}
+                <div className="order-2 lg:order-1">
+                  <ResumePreview formData={formData} />
+                </div>
+
+                {/* Right Side - Form Fields */}
+                <div className="space-y-6 overflow-y-auto max-h-[calc(90vh-120px)] pr-4 order-1 lg:order-2">
                   <div className="bg-slate-900/50 p-4 rounded-lg border border-purple-500/20">
                     <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
                       <FileText className="w-5 h-5" />
@@ -1120,174 +1173,26 @@ export default function ResumePage() {
                 </div>
               </div>
 
-              {/* Right Side - Live Preview */}
-              <div className="bg-slate-900/50 rounded-lg border border-purple-500/20 p-6 overflow-y-auto max-h-[calc(90vh-120px)] sticky top-0">
-                <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
-                  <FileText className="w-5 h-5" />
-                  Live Preview
-                </h3>
-                <div className="bg-white text-black p-8 rounded-lg shadow-lg min-h-[600px]">
-                  {/* Resume Preview */}
-                  <div className="space-y-6">
-                    {/* Header */}
-                    <div className="border-b-2 border-purple-600 pb-4">
-                      <h1 className="text-3xl font-bold text-purple-700">
-                        {formData.personalInfo?.fullName || "Your Name"}
-                      </h1>
-                      <div className="text-sm text-gray-600 mt-2 space-y-1">
-                        {formData.personalInfo?.email && (
-                          <p>{formData.personalInfo.email}</p>
-                        )}
-                        {formData.personalInfo?.phone && (
-                          <p>{formData.personalInfo.phone}</p>
-                        )}
-                        {formData.personalInfo?.location && (
-                          <p>{formData.personalInfo.location}</p>
-                        )}
-                        {formData.personalInfo?.website && (
-                          <p className="text-blue-600">{formData.personalInfo.website}</p>
-                        )}
-                        {formData.personalInfo?.linkedin && (
-                          <p className="text-blue-600">{formData.personalInfo.linkedin}</p>
-                        )}
-                        {formData.personalInfo?.github && (
-                          <p className="text-blue-600">{formData.personalInfo.github}</p>
-                        )}
-                      </div>
-                    </div>
-
-                    {/* Summary */}
-                    {formData.personalInfo?.summary && (
-                      <div>
-                        <h2 className="text-xl font-bold text-purple-700 mb-2">SUMMARY</h2>
-                        <p className="text-sm text-gray-700">{formData.personalInfo.summary}</p>
-                      </div>
-                    )}
-
-                    {/* Experience */}
-                    {formData.experience && formData.experience.length > 0 && (
-                      <div>
-                        <h2 className="text-xl font-bold text-purple-700 mb-2">EXPERIENCE</h2>
-                        <div className="space-y-3">
-                          {formData.experience.map((exp, idx) => (
-                            <div key={idx} className="text-sm">
-                              <h3 className="font-bold text-gray-800">
-                                {exp.position || "Position"} {exp.company && `at ${exp.company}`}
-                              </h3>
-                              <p className="text-gray-600 text-xs">
-                                {exp.startDate || "Start"} - {exp.current ? "Present" : exp.endDate || "End"}
-                              </p>
-                              {exp.description && (
-                                <p className="text-gray-700 mt-1">{exp.description}</p>
-                              )}
-                              {exp.achievements && exp.achievements.length > 0 && (
-                                <ul className="list-disc list-inside mt-1 text-gray-700">
-                                  {exp.achievements.map((ach, i) => (
-                                    <li key={i}>{ach}</li>
-                                  ))}
-                                </ul>
-                              )}
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-
-                    {/* Education */}
-                    {formData.education && formData.education.length > 0 && (
-                      <div>
-                        <h2 className="text-xl font-bold text-purple-700 mb-2">EDUCATION</h2>
-                        <div className="space-y-3">
-                          {formData.education.map((edu, idx) => (
-                            <div key={idx} className="text-sm">
-                              <h3 className="font-bold text-gray-800">
-                                {edu.degree || "Degree"} {edu.field && `in ${edu.field}`}
-                              </h3>
-                              <p className="text-gray-700">{edu.institution || "Institution"}</p>
-                              <p className="text-gray-600 text-xs">
-                                {edu.startDate || "Start"} - {edu.endDate || "End"}
-                                {edu.gpa && ` | GPA: ${edu.gpa}`}
-                              </p>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-
-                    {/* Skills */}
-                    {formData.skills && formData.skills.length > 0 && (
-                      <div>
-                        <h2 className="text-xl font-bold text-purple-700 mb-2">SKILLS</h2>
-                        <div className="space-y-2">
-                          {formData.skills.map((skill, idx) => (
-                            <div key={idx} className="text-sm">
-                              <span className="font-bold text-gray-800">{skill.category || "Category"}:</span>{" "}
-                              <span className="text-gray-700">
-                                {skill.skills && skill.skills.length > 0 ? skill.skills.join(", ") : "Skills"}
-                              </span>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-
-                    {/* Certifications */}
-                    {formData.certifications && formData.certifications.length > 0 && (
-                      <div>
-                        <h2 className="text-xl font-bold text-purple-700 mb-2">CERTIFICATIONS</h2>
-                        <div className="space-y-2">
-                          {formData.certifications.map((cert, idx) => (
-                            <div key={idx} className="text-sm">
-                              <p className="text-gray-800">
-                                <span className="font-bold">{cert.name || "Certification"}</span>
-                                {cert.issuer && ` - ${cert.issuer}`}
-                                {cert.date && ` (${cert.date})`}
-                              </p>
-                              {cert.url && <p className="text-blue-600 text-xs">{cert.url}</p>}
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-
-                    {/* Languages */}
-                    {formData.languages && formData.languages.length > 0 && (
-                      <div>
-                        <h2 className="text-xl font-bold text-purple-700 mb-2">LANGUAGES</h2>
-                        <div className="space-y-1">
-                          {formData.languages.map((lang, idx) => (
-                            <p key={idx} className="text-sm text-gray-700">
-                              <span className="font-bold">{lang.language || "Language"}:</span> {lang.proficiency || "Proficiency"}
-                            </p>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                </div>
+              <div className="flex justify-end gap-3 mt-6">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setShowForm(false);
+                    setEditingId(null);
+                  }}
+                  className="px-6 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg transition"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-6 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition flex items-center gap-2"
+                >
+                  <Save className="w-5 h-5" />
+                  {editingId ? "Update" : "Create"} Resume
+                </button>
               </div>
-            </div>
-
-            <div className="flex justify-end gap-3 mt-6">
-              <button
-                type="button"
-                onClick={() => {
-                  setShowForm(false);
-                  setEditingId(null);
-                }}
-                className="px-6 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg transition"
-              >
-                Cancel
-              </button>
-              <button
-                type="submit"
-                className="px-6 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition flex items-center gap-2"
-              >
-                <Save className="w-5 h-5" />
-                {editingId ? "Update" : "Create"} Resume
-              </button>
-            </div>
-          </form>
+            </form>
           </div>
         </div>
       )}
@@ -1426,73 +1331,75 @@ export default function ResumePage() {
       </div>
 
       {/* Delete Confirmation Modal */}
-      {deleteModal.show && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center p-4"
-          style={{ animation: "fadeIn 0.2s ease-out" }}
-        >
-          {/* Backdrop */}
+      {
+        deleteModal.show && (
           <div
-            className="absolute inset-0 bg-black bg-opacity-60"
-            style={{ backdropFilter: "blur(4px)" }}
-            onClick={closeDeleteModal}
-          ></div>
-
-          {/* Modal */}
-          <div
-            className="relative bg-slate-800 rounded-2xl border border-red-500 border-opacity-30 shadow-2xl max-w-md w-full"
-            style={{ animation: "scaleIn 0.2s ease-out" }}
+            className="fixed inset-0 z-50 flex items-center justify-center p-4"
+            style={{ animation: "fadeIn 0.2s ease-out" }}
           >
-            {/* Header */}
-            <div className="flex items-start gap-4 p-6 pb-4">
-              <div className="flex-shrink-0 w-12 h-12 rounded-full bg-red-500 bg-opacity-20 flex items-center justify-center">
-                <AlertTriangle className="w-6 h-6 text-red-400" />
+            {/* Backdrop */}
+            <div
+              className="absolute inset-0 bg-black bg-opacity-60"
+              style={{ backdropFilter: "blur(4px)" }}
+              onClick={closeDeleteModal}
+            ></div>
+
+            {/* Modal */}
+            <div
+              className="relative bg-slate-800 rounded-2xl border border-red-500 border-opacity-30 shadow-2xl max-w-md w-full"
+              style={{ animation: "scaleIn 0.2s ease-out" }}
+            >
+              {/* Header */}
+              <div className="flex items-start gap-4 p-6 pb-4">
+                <div className="flex-shrink-0 w-12 h-12 rounded-full bg-red-500 bg-opacity-20 flex items-center justify-center">
+                  <AlertTriangle className="w-6 h-6 text-red-400" />
+                </div>
+                <div className="flex-1">
+                  <h3 className="text-xl font-bold text-white mb-1">
+                    Delete Resume
+                  </h3>
+                  <p className="text-gray-400 text-sm">
+                    This action cannot be undone
+                  </p>
+                </div>
+                <button
+                  onClick={closeDeleteModal}
+                  className="text-gray-400 hover:text-white transition-colors duration-200"
+                >
+                  <X className="w-5 h-5" />
+                </button>
               </div>
-              <div className="flex-1">
-                <h3 className="text-xl font-bold text-white mb-1">
-                  Delete Resume
-                </h3>
-                <p className="text-gray-400 text-sm">
-                  This action cannot be undone
+
+              {/* Content */}
+              <div className="px-6 pb-6">
+                <p className="text-gray-300 leading-relaxed">
+                  Are you sure you want to delete the resume for{" "}
+                  <span className="font-semibold text-white">
+                    {deleteModal.resumeName}
+                  </span>
+                  ? This will permanently remove the resume from your database.
                 </p>
               </div>
-              <button
-                onClick={closeDeleteModal}
-                className="text-gray-400 hover:text-white transition-colors duration-200"
-              >
-                <X className="w-5 h-5" />
-              </button>
-            </div>
 
-            {/* Content */}
-            <div className="px-6 pb-6">
-              <p className="text-gray-300 leading-relaxed">
-                Are you sure you want to delete the resume for{" "}
-                <span className="font-semibold text-white">
-                  {deleteModal.resumeName}
-                </span>
-                ? This will permanently remove the resume from your database.
-              </p>
-            </div>
-
-            {/* Actions */}
-            <div className="flex gap-3 p-6 pt-0">
-              <button
-                onClick={closeDeleteModal}
-                className="flex-1 px-4 py-2.5 bg-slate-700 hover:bg-slate-600 text-white rounded-lg transition-colors duration-200 font-medium"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={handleDelete}
-                className="flex-1 px-4 py-2.5 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors duration-200 font-medium"
-              >
-                Delete
-              </button>
+              {/* Actions */}
+              <div className="flex gap-3 p-6 pt-0">
+                <button
+                  onClick={closeDeleteModal}
+                  className="flex-1 px-4 py-2.5 bg-slate-700 hover:bg-slate-600 text-white rounded-lg transition-colors duration-200 font-medium"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleDelete}
+                  className="flex-1 px-4 py-2.5 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors duration-200 font-medium"
+                >
+                  Delete
+                </button>
+              </div>
             </div>
           </div>
-        </div>
-      )}
+        )
+      }
 
       <style jsx>{`
         @keyframes fadeIn {
@@ -1515,6 +1422,6 @@ export default function ResumePage() {
           }
         }
       `}</style>
-    </div>
+    </div >
   );
 }

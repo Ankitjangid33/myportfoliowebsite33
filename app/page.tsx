@@ -12,6 +12,7 @@ interface Project {
   technologies: string[];
   liveUrl?: string;
   githubUrl?: string;
+  imageUrl?: string;
   featured: boolean;
 }
 
@@ -50,6 +51,24 @@ export default function Home() {
     profileImage: "",
   });
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [imageErrors, setImageErrors] = useState<Record<string, number>>({});
+
+  // Function to get screenshot URL with fallback services
+  const getScreenshotUrl = (url: string, attempt: number = 0) => {
+    const services = [
+      `https://image.thum.io/get/width/400/crop/600/${url}`,
+      `https://api.apiflash.com/v1/urltoimage?access_key=demo&url=${encodeURIComponent(url)}&width=400&height=300`,
+      `https://shot.screenshotapi.net/screenshot?token=demo&url=${encodeURIComponent(url)}&width=400&height=300&output=image&file_type=png&wait_for_event=load`,
+    ];
+    return services[attempt] || services[0];
+  };
+
+  const handleImageError = (projectId: string) => {
+    setImageErrors(prev => {
+      const currentAttempt = prev[projectId] || 0;
+      return { ...prev, [projectId]: currentAttempt + 1 };
+    });
+  };
 
   useEffect(() => {
     fetch("/api/projects")
@@ -87,6 +106,7 @@ export default function Home() {
       })
       .catch(console.error);
   }, []);
+
   return (
     <main className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
       {/* Navigation */}
@@ -205,13 +225,12 @@ export default function Home() {
               }}
             >
               <div
-                className={`w-2 h-2 rounded-full ${
-                  i % 3 === 0
-                    ? "bg-purple-500/30"
-                    : i % 3 === 1
-                      ? "bg-pink-500/30"
-                      : "bg-blue-500/30"
-                }`}
+                className={`w-2 h-2 rounded-full ${i % 3 === 0
+                  ? "bg-purple-500/30"
+                  : i % 3 === 1
+                    ? "bg-pink-500/30"
+                    : "bg-blue-500/30"
+                  }`}
                 style={{
                   boxShadow: `0 0 ${10 + Math.random() * 20}px currentColor`,
                 }}
@@ -247,33 +266,35 @@ export default function Home() {
           </div>
 
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold text-white mb-3 sm:mb-4 px-4">
-            Hi, I&apos;m{" "}
-            <span className="relative inline-block group">
-              {/* Glowing orbs around the name */}
-              <div className="absolute -inset-4 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                <div className="absolute top-0 left-0 w-3 h-3 bg-purple-500 rounded-full animate-orbit-1 blur-sm" />
-                <div className="absolute top-0 right-0 w-3 h-3 bg-pink-500 rounded-full animate-orbit-2 blur-sm" />
-                <div className="absolute bottom-0 left-0 w-3 h-3 bg-blue-500 rounded-full animate-orbit-3 blur-sm" />
-                <div className="absolute bottom-0 right-0 w-3 h-3 bg-cyan-500 rounded-full animate-orbit-4 blur-sm" />
-              </div>
+            <span className="inline-flex items-center justify-center gap-2 sm:gap-3 flex-wrap">
+              <span className="mb-6 slide-in-text inline-block">Hi, I&apos;m</span>
+              <span className="relative inline-block">
+                {/* Glowing orbs around the name */}
+                <div className="absolute -inset-4 opacity-0 hover:opacity-100 transition-opacity duration-500 pointer-events-none">
+                  <div className="absolute top-0 left-0 w-3 h-3 bg-purple-500 rounded-full animate-orbit-1 blur-sm" />
+                  <div className="absolute top-0 right-0 w-3 h-3 bg-pink-500 rounded-full animate-orbit-2 blur-sm" />
+                  <div className="absolute bottom-0 left-0 w-3 h-3 bg-blue-500 rounded-full animate-orbit-3 blur-sm" />
+                  <div className="absolute bottom-0 right-0 w-3 h-3 bg-cyan-500 rounded-full animate-orbit-4 blur-sm" />
+                </div>
 
-              {/* Animated gradient text with glow */}
-              <span className="relative text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-500 to-purple-400 animate-gradient-x drop-shadow-[0_0_30px_rgba(168,85,247,0.5)]">
-                {about.displayName}
+                {/* Animated gradient text with glow and continuous typing effect */}
+                <span className=" pb-4 typing-text text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-500 to-purple-400 animate-gradient-x drop-shadow-[0_0_30px_rgba(168,85,247,0.5)]">
+                  {about.displayName || "Ankit Jangid"}
+                </span>
+
+                {/* Sparkle effects */}
+                <div className="absolute inset-0 overflow-visible pointer-events-none">
+                  <div className="absolute top-0 left-1/4 w-1 h-1 bg-white rounded-full animate-sparkle" />
+                  <div
+                    className="absolute top-1/2 right-1/4 w-1 h-1 bg-white rounded-full animate-sparkle"
+                    style={{ animationDelay: "0.5s" }}
+                  />
+                  <div
+                    className="absolute bottom-0 left-1/2 w-1 h-1 bg-white rounded-full animate-sparkle"
+                    style={{ animationDelay: "1s" }}
+                  />
+                </div>
               </span>
-
-              {/* Sparkle effects */}
-              <div className="absolute inset-0 overflow-visible">
-                <div className="absolute top-0 left-1/4 w-1 h-1 bg-white rounded-full animate-sparkle" />
-                <div
-                  className="absolute top-1/2 right-1/4 w-1 h-1 bg-white rounded-full animate-sparkle"
-                  style={{ animationDelay: "0.5s" }}
-                />
-                <div
-                  className="absolute bottom-0 left-1/2 w-1 h-1 bg-white rounded-full animate-sparkle"
-                  style={{ animationDelay: "1s" }}
-                />
-              </div>
             </span>
           </h1>
           <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-300 mb-6 sm:mb-8 animate-fade-in-up px-4">
@@ -390,56 +411,78 @@ export default function Home() {
           </h2>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
             {projects.length > 0 ? (
-              projects.map((project) => (
-                <div
-                  key={project._id}
-                  className="bg-slate-800/50 rounded-2xl overflow-hidden border border-purple-500/20 hover:border-purple-500/40 transition group"
-                >
-                  <div className="h-40 sm:h-48 bg-gradient-to-br from-purple-500/20 to-pink-500/20 flex items-center justify-center">
-                    <Rocket className="w-20 h-20 sm:w-24 sm:h-24 text-purple-400" />
-                  </div>
-                  <div className="p-4 sm:p-6">
-                    <h3 className="text-lg sm:text-xl font-semibold text-white mb-2">
-                      {project.title}
-                    </h3>
-                    <p className="text-sm sm:text-base text-gray-400 mb-4">
-                      {project.description}
-                    </p>
-                    <div className="flex gap-2 mb-4 flex-wrap">
-                      {project.technologies.map((tech, i) => (
-                        <span
-                          key={i}
-                          className="px-2 sm:px-3 py-1 bg-purple-500/20 text-purple-300 rounded-full text-xs sm:text-sm"
-                        >
-                          {tech}
-                        </span>
-                      ))}
-                    </div>
-                    <div className="flex gap-3 sm:gap-4 flex-wrap">
-                      {project.liveUrl && (
-                        <a
-                          href={project.liveUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-sm sm:text-base text-purple-400 hover:text-purple-300 transition"
-                        >
-                          Live Demo →
-                        </a>
-                      )}
-                      {project.githubUrl && (
-                        <a
-                          href={project.githubUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-sm sm:text-base text-gray-400 hover:text-gray-300 transition"
-                        >
-                          GitHub →
-                        </a>
+              projects.map((project) => {
+                const errorAttempt = imageErrors[project._id] || 0;
+                const showFallback = errorAttempt >= 3;
+
+                return (
+                  <div
+                    key={project._id}
+                    className="bg-slate-800/50 rounded-2xl overflow-hidden border border-purple-500/20 hover:border-purple-500/40 transition group"
+                  >
+                    <div className="h-40 sm:h-48 bg-gradient-to-br from-purple-500/20 to-pink-500/20 flex items-center justify-center relative overflow-hidden">
+                      {project.imageUrl ? (
+                        <Image
+                          src={project.imageUrl}
+                          alt={project.title}
+                          fill
+                          className="object-contain group-hover:scale-105 transition-transform duration-300"
+                        />
+                      ) : project.liveUrl && !showFallback ? (
+                        <Image
+                          src={getScreenshotUrl(project.liveUrl, errorAttempt)}
+                          alt={project.title}
+                          fill
+                          className="object-contain group-hover:scale-105 transition-transform duration-300"
+                          onError={() => handleImageError(project._id)}
+                        />
+                      ) : (
+                        <Rocket className="w-20 h-20 sm:w-24 sm:h-24 text-purple-400" />
                       )}
                     </div>
+                    <div className="p-4 sm:p-6">
+                      <h3 className="text-lg sm:text-xl font-semibold text-white mb-2">
+                        {project.title}
+                      </h3>
+                      <p className="text-sm sm:text-base text-gray-400 mb-4">
+                        {project.description}
+                      </p>
+                      <div className="flex gap-2 mb-4 flex-wrap">
+                        {project.technologies.map((tech, i) => (
+                          <span
+                            key={i}
+                            className="px-2 sm:px-3 py-1 bg-purple-500/20 text-purple-300 rounded-full text-xs sm:text-sm"
+                          >
+                            {tech}
+                          </span>
+                        ))}
+                      </div>
+                      <div className="flex gap-3 sm:gap-4 flex-wrap">
+                        {project.liveUrl && (
+                          <a
+                            href={project.liveUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-sm sm:text-base text-purple-400 hover:text-purple-300 transition"
+                          >
+                            Live Demo →
+                          </a>
+                        )}
+                        {project.githubUrl && (
+                          <a
+                            href={project.githubUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-sm sm:text-base text-gray-400 hover:text-gray-300 transition"
+                          >
+                            GitHub →
+                          </a>
+                        )}
+                      </div>
+                    </div>
                   </div>
-                </div>
-              ))
+                )
+              })
             ) : (
               <div className="col-span-full text-center text-gray-400 py-12">
                 No projects yet. Add some from the admin panel!
