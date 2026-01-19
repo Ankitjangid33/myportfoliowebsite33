@@ -38,6 +38,14 @@ export default function ContactsPage() {
 
   useEffect(() => {
     fetchContacts();
+
+    // Auto-refresh every 5 seconds
+    const intervalId = setInterval(() => {
+      fetchContacts();
+    }, 5000);
+
+    // Cleanup interval on component unmount
+    return () => clearInterval(intervalId);
   }, []);
 
   const fetchContacts = async () => {

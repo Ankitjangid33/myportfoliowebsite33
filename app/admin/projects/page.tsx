@@ -18,7 +18,7 @@ import {
   Upload,
   Folder,
   Code,
-  TrendingUp
+  TrendingUp,
 } from "lucide-react";
 
 interface Project {
@@ -62,6 +62,14 @@ export default function ProjectsPage() {
 
   useEffect(() => {
     fetchProjects();
+
+    // Auto-refresh every 5 seconds
+    const intervalId = setInterval(() => {
+      fetchProjects();
+    }, 5000);
+
+    // Cleanup interval on component unmount
+    return () => clearInterval(intervalId);
   }, []);
 
   useEffect(() => {
@@ -71,15 +79,19 @@ export default function ProjectsPage() {
       filtered = filtered.filter(
         (project) =>
           project.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          project.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          project.description
+            .toLowerCase()
+            .includes(searchQuery.toLowerCase()) ||
           project.technologies.some((tech) =>
-            tech.toLowerCase().includes(searchQuery.toLowerCase())
-          )
+            tech.toLowerCase().includes(searchQuery.toLowerCase()),
+          ),
       );
     }
 
     if (filterFeatured !== null) {
-      filtered = filtered.filter((project) => project.featured === filterFeatured);
+      filtered = filtered.filter(
+        (project) => project.featured === filterFeatured,
+      );
     }
 
     setFilteredProjects(filtered);
@@ -141,7 +153,10 @@ export default function ProjectsPage() {
 
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           {[1, 2, 3, 4].map((i) => (
-            <div key={i} className="bg-slate-800/50 p-6 rounded-xl border border-purple-500/20">
+            <div
+              key={i}
+              className="bg-slate-800/50 p-6 rounded-xl border border-purple-500/20"
+            >
               <div className="h-4 w-20 bg-slate-700/30 rounded animate-pulse mb-2"></div>
               <div className="h-8 w-12 bg-slate-700/50 rounded animate-pulse"></div>
             </div>
@@ -176,7 +191,9 @@ export default function ProjectsPage() {
             <Folder className="w-8 h-8 text-purple-400" />
             Projects
           </h1>
-          <p className="text-gray-400 mt-1">Manage and showcase your portfolio projects</p>
+          <p className="text-gray-400 mt-1">
+            Manage and showcase your portfolio projects
+          </p>
         </div>
         <button
           onClick={() => {
@@ -195,8 +212,12 @@ export default function ProjectsPage() {
         <div className="bg-gradient-to-br from-purple-500/10 to-purple-600/10 p-6 rounded-xl border border-purple-500/20">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-gray-400 text-sm font-medium">Total Projects</p>
-              <p className="text-3xl font-bold text-white mt-1">{stats.total}</p>
+              <p className="text-gray-400 text-sm font-medium">
+                Total Projects
+              </p>
+              <p className="text-3xl font-bold text-white mt-1">
+                {stats.total}
+              </p>
             </div>
             <div className="w-12 h-12 bg-purple-500/20 rounded-lg flex items-center justify-center">
               <Folder className="w-6 h-6 text-purple-400" />
@@ -208,7 +229,9 @@ export default function ProjectsPage() {
           <div className="flex items-center justify-between">
             <div>
               <p className="text-gray-400 text-sm font-medium">Featured</p>
-              <p className="text-3xl font-bold text-white mt-1">{stats.featured}</p>
+              <p className="text-3xl font-bold text-white mt-1">
+                {stats.featured}
+              </p>
             </div>
             <div className="w-12 h-12 bg-yellow-500/20 rounded-lg flex items-center justify-center">
               <Star className="w-6 h-6 text-yellow-400" />
@@ -220,7 +243,9 @@ export default function ProjectsPage() {
           <div className="flex items-center justify-between">
             <div>
               <p className="text-gray-400 text-sm font-medium">Live Demos</p>
-              <p className="text-3xl font-bold text-white mt-1">{stats.withLiveUrl}</p>
+              <p className="text-3xl font-bold text-white mt-1">
+                {stats.withLiveUrl}
+              </p>
             </div>
             <div className="w-12 h-12 bg-blue-500/20 rounded-lg flex items-center justify-center">
               <ExternalLink className="w-6 h-6 text-blue-400" />
@@ -232,7 +257,9 @@ export default function ProjectsPage() {
           <div className="flex items-center justify-between">
             <div>
               <p className="text-gray-400 text-sm font-medium">On GitHub</p>
-              <p className="text-3xl font-bold text-white mt-1">{stats.withGithub}</p>
+              <p className="text-3xl font-bold text-white mt-1">
+                {stats.withGithub}
+              </p>
             </div>
             <div className="w-12 h-12 bg-green-500/20 rounded-lg flex items-center justify-center">
               <Github className="w-6 h-6 text-green-400" />
@@ -256,11 +283,14 @@ export default function ProjectsPage() {
           </div>
           <div className="flex gap-2">
             <button
-              onClick={() => setFilterFeatured(filterFeatured === true ? null : true)}
-              className={`px-4 py-3 rounded-lg transition font-medium flex items-center gap-2 ${filterFeatured === true
-                ? "bg-yellow-500/20 text-yellow-300 border border-yellow-500/30"
-                : "bg-slate-900 text-gray-400 border border-purple-500/20 hover:border-purple-500/40"
-                }`}
+              onClick={() =>
+                setFilterFeatured(filterFeatured === true ? null : true)
+              }
+              className={`px-4 py-3 rounded-lg transition font-medium flex items-center gap-2 ${
+                filterFeatured === true
+                  ? "bg-yellow-500/20 text-yellow-300 border border-yellow-500/30"
+                  : "bg-slate-900 text-gray-400 border border-purple-500/20 hover:border-purple-500/40"
+              }`}
             >
               <Star className="w-4 h-4" />
               Featured
@@ -446,7 +476,9 @@ export default function ProjectsPage() {
                         Edit
                       </button>
                       <button
-                        onClick={() => openDeleteModal(project._id, project.title)}
+                        onClick={() =>
+                          openDeleteModal(project._id, project.title)
+                        }
                         className="px-4 py-2 bg-red-600/20 hover:bg-red-600/30 text-red-300 rounded-lg transition font-medium text-sm flex items-center gap-2"
                       >
                         <Trash2 className="w-4 h-4" />
@@ -508,7 +540,9 @@ export default function ProjectsPage() {
             <Folder className="w-10 h-10 text-purple-400" />
           </div>
           <p className="text-gray-400 text-lg font-medium mb-2">
-            {searchQuery || filterFeatured !== null ? "No projects found" : "No projects yet"}
+            {searchQuery || filterFeatured !== null
+              ? "No projects found"
+              : "No projects yet"}
           </p>
           <p className="text-gray-500">
             {searchQuery || filterFeatured !== null
@@ -706,7 +740,10 @@ function ProjectForm({
 
     const data = {
       ...formData,
-      technologies: formData.technologies.split(",").map((t) => t.trim()).filter(Boolean),
+      technologies: formData.technologies
+        .split(",")
+        .map((t) => t.trim())
+        .filter(Boolean),
     };
 
     try {
@@ -798,8 +835,12 @@ function ProjectForm({
                   ) : (
                     <div className="text-center">
                       <ImageIcon className="w-12 h-12 text-purple-400 mx-auto mb-2" />
-                      <p className="text-gray-300 font-medium">Click to upload image</p>
-                      <p className="text-gray-500 text-sm mt-1">PNG, JPG up to 5MB</p>
+                      <p className="text-gray-300 font-medium">
+                        Click to upload image
+                      </p>
+                      <p className="text-gray-500 text-sm mt-1">
+                        PNG, JPG up to 5MB
+                      </p>
                     </div>
                   )}
                 </label>
@@ -824,8 +865,9 @@ function ProjectForm({
                   setFormData({ ...formData, title: e.target.value });
                   setErrors({ ...errors, title: "" });
                 }}
-                className={`w-full px-4 py-3 bg-slate-900 border rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-purple-500 transition ${errors.title ? "border-red-500" : "border-purple-500/20"
-                  }`}
+                className={`w-full px-4 py-3 bg-slate-900 border rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-purple-500 transition ${
+                  errors.title ? "border-red-500" : "border-purple-500/20"
+                }`}
               />
               {errors.title && (
                 <p className="text-red-400 text-sm mt-1">{errors.title}</p>
@@ -844,12 +886,15 @@ function ProjectForm({
                   setFormData({ ...formData, description: e.target.value });
                   setErrors({ ...errors, description: "" });
                 }}
-                className={`w-full px-4 py-3 bg-slate-900 border rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-purple-500 transition resize-none ${errors.description ? "border-red-500" : "border-purple-500/20"
-                  }`}
+                className={`w-full px-4 py-3 bg-slate-900 border rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-purple-500 transition resize-none ${
+                  errors.description ? "border-red-500" : "border-purple-500/20"
+                }`}
                 rows={4}
               />
               {errors.description && (
-                <p className="text-red-400 text-sm mt-1">{errors.description}</p>
+                <p className="text-red-400 text-sm mt-1">
+                  {errors.description}
+                </p>
               )}
             </div>
 
@@ -884,8 +929,9 @@ function ProjectForm({
                   setFormData({ ...formData, liveUrl: e.target.value });
                   setErrors({ ...errors, liveUrl: "" });
                 }}
-                className={`w-full px-4 py-3 bg-slate-900 border rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-purple-500 transition ${errors.liveUrl ? "border-red-500" : "border-purple-500/20"
-                  }`}
+                className={`w-full px-4 py-3 bg-slate-900 border rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-purple-500 transition ${
+                  errors.liveUrl ? "border-red-500" : "border-purple-500/20"
+                }`}
               />
               {errors.liveUrl && (
                 <p className="text-red-400 text-sm mt-1">{errors.liveUrl}</p>
@@ -906,8 +952,9 @@ function ProjectForm({
                   setFormData({ ...formData, githubUrl: e.target.value });
                   setErrors({ ...errors, githubUrl: "" });
                 }}
-                className={`w-full px-4 py-3 bg-slate-900 border rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-purple-500 transition ${errors.githubUrl ? "border-red-500" : "border-purple-500/20"
-                  }`}
+                className={`w-full px-4 py-3 bg-slate-900 border rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-purple-500 transition ${
+                  errors.githubUrl ? "border-red-500" : "border-purple-500/20"
+                }`}
               />
               {errors.githubUrl && (
                 <p className="text-red-400 text-sm mt-1">{errors.githubUrl}</p>
@@ -930,7 +977,9 @@ function ProjectForm({
                 <Star className="w-4 h-4 text-yellow-400" />
                 Mark as Featured Project
               </span>
-              <p className="text-gray-500 text-sm">Featured projects appear first on your portfolio</p>
+              <p className="text-gray-500 text-sm">
+                Featured projects appear first on your portfolio
+              </p>
             </div>
           </label>
 

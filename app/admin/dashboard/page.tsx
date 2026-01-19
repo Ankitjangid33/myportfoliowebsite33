@@ -69,6 +69,14 @@ export default function DashboardPage() {
   useEffect(() => {
     if (status === "authenticated") {
       fetchData();
+
+      // Auto-refresh every 5 seconds
+      const intervalId = setInterval(() => {
+        fetchData();
+      }, 5000);
+
+      // Cleanup interval on component unmount
+      return () => clearInterval(intervalId);
     }
   }, [status]);
 

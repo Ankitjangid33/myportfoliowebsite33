@@ -138,6 +138,14 @@ export default function ResumePage() {
   useEffect(() => {
     if (status === "authenticated") {
       fetchResumes();
+
+      // Auto-refresh every 5 seconds
+      const intervalId = setInterval(() => {
+        fetchResumes();
+      }, 5000);
+
+      // Cleanup interval on component unmount
+      return () => clearInterval(intervalId);
     }
   }, [status]);
 
@@ -409,178 +417,178 @@ export default function ResumePage() {
             }),
             ...(resume.personalInfo.website
               ? [
-                new Paragraph({
-                  text: `Website: ${resume.personalInfo.website}`,
-                  alignment: AlignmentType.CENTER,
-                  spacing: { after: 100 },
-                }),
-              ]
+                  new Paragraph({
+                    text: `Website: ${resume.personalInfo.website}`,
+                    alignment: AlignmentType.CENTER,
+                    spacing: { after: 100 },
+                  }),
+                ]
               : []),
             ...(resume.personalInfo.linkedin
               ? [
-                new Paragraph({
-                  text: `LinkedIn: ${resume.personalInfo.linkedin}`,
-                  alignment: AlignmentType.CENTER,
-                  spacing: { after: 100 },
-                }),
-              ]
+                  new Paragraph({
+                    text: `LinkedIn: ${resume.personalInfo.linkedin}`,
+                    alignment: AlignmentType.CENTER,
+                    spacing: { after: 100 },
+                  }),
+                ]
               : []),
             ...(resume.personalInfo.github
               ? [
-                new Paragraph({
-                  text: `GitHub: ${resume.personalInfo.github}`,
-                  alignment: AlignmentType.CENTER,
-                  spacing: { after: 300 },
-                }),
-              ]
+                  new Paragraph({
+                    text: `GitHub: ${resume.personalInfo.github}`,
+                    alignment: AlignmentType.CENTER,
+                    spacing: { after: 300 },
+                  }),
+                ]
               : []),
 
             // Summary
             ...(resume.personalInfo.summary
               ? [
-                new Paragraph({
-                  text: "SUMMARY",
-                  heading: HeadingLevel.HEADING_2,
-                  spacing: { before: 200, after: 200 },
-                }),
-                new Paragraph({
-                  text: resume.personalInfo.summary,
-                  spacing: { after: 300 },
-                }),
-              ]
+                  new Paragraph({
+                    text: "SUMMARY",
+                    heading: HeadingLevel.HEADING_2,
+                    spacing: { before: 200, after: 200 },
+                  }),
+                  new Paragraph({
+                    text: resume.personalInfo.summary,
+                    spacing: { after: 300 },
+                  }),
+                ]
               : []),
 
             // Experience
             ...(resume.experience.length > 0
               ? [
-                new Paragraph({
-                  text: "EXPERIENCE",
-                  heading: HeadingLevel.HEADING_2,
-                  spacing: { before: 200, after: 200 },
-                }),
-                ...resume.experience.flatMap((exp) => [
                   new Paragraph({
-                    children: [
-                      new TextRun({
-                        text: `${exp.position} at ${exp.company}`,
-                        bold: true,
-                      }),
-                    ],
-                    spacing: { after: 100 },
+                    text: "EXPERIENCE",
+                    heading: HeadingLevel.HEADING_2,
+                    spacing: { before: 200, after: 200 },
                   }),
-                  new Paragraph({
-                    text: `${exp.startDate} - ${exp.current ? "Present" : exp.endDate}`,
-                    spacing: { after: 100 },
-                  }),
-                  ...(exp.description
-                    ? [
-                      new Paragraph({
-                        text: exp.description,
-                        spacing: { after: 100 },
-                      }),
-                    ]
-                    : []),
-                  ...exp.achievements.map(
-                    (ach) =>
-                      new Paragraph({
-                        text: `• ${ach}`,
-                        spacing: { after: 100 },
-                      }),
-                  ),
-                  new Paragraph({ text: "", spacing: { after: 200 } }),
-                ]),
-              ]
+                  ...resume.experience.flatMap((exp) => [
+                    new Paragraph({
+                      children: [
+                        new TextRun({
+                          text: `${exp.position} at ${exp.company}`,
+                          bold: true,
+                        }),
+                      ],
+                      spacing: { after: 100 },
+                    }),
+                    new Paragraph({
+                      text: `${exp.startDate} - ${exp.current ? "Present" : exp.endDate}`,
+                      spacing: { after: 100 },
+                    }),
+                    ...(exp.description
+                      ? [
+                          new Paragraph({
+                            text: exp.description,
+                            spacing: { after: 100 },
+                          }),
+                        ]
+                      : []),
+                    ...exp.achievements.map(
+                      (ach) =>
+                        new Paragraph({
+                          text: `• ${ach}`,
+                          spacing: { after: 100 },
+                        }),
+                    ),
+                    new Paragraph({ text: "", spacing: { after: 200 } }),
+                  ]),
+                ]
               : []),
 
             // Education
             ...(resume.education.length > 0
               ? [
-                new Paragraph({
-                  text: "EDUCATION",
-                  heading: HeadingLevel.HEADING_2,
-                  spacing: { before: 200, after: 200 },
-                }),
-                ...resume.education.flatMap((edu) => [
                   new Paragraph({
-                    children: [
-                      new TextRun({
-                        text: `${edu.degree} in ${edu.field}`,
-                        bold: true,
-                      }),
-                    ],
-                    spacing: { after: 100 },
+                    text: "EDUCATION",
+                    heading: HeadingLevel.HEADING_2,
+                    spacing: { before: 200, after: 200 },
                   }),
-                  new Paragraph({
-                    text: edu.institution,
-                    spacing: { after: 100 },
-                  }),
-                  new Paragraph({
-                    text: `${edu.startDate} - ${edu.endDate}${edu.gpa ? ` | GPA: ${edu.gpa}` : ""}`,
-                    spacing: { after: 200 },
-                  }),
-                ]),
-              ]
+                  ...resume.education.flatMap((edu) => [
+                    new Paragraph({
+                      children: [
+                        new TextRun({
+                          text: `${edu.degree} in ${edu.field}`,
+                          bold: true,
+                        }),
+                      ],
+                      spacing: { after: 100 },
+                    }),
+                    new Paragraph({
+                      text: edu.institution,
+                      spacing: { after: 100 },
+                    }),
+                    new Paragraph({
+                      text: `${edu.startDate} - ${edu.endDate}${edu.gpa ? ` | GPA: ${edu.gpa}` : ""}`,
+                      spacing: { after: 200 },
+                    }),
+                  ]),
+                ]
               : []),
 
             // Skills
             ...(resume.skills.length > 0
               ? [
-                new Paragraph({
-                  text: "SKILLS",
-                  heading: HeadingLevel.HEADING_2,
-                  spacing: { before: 200, after: 200 },
-                }),
-                ...resume.skills.map(
-                  (skill) =>
-                    new Paragraph({
-                      text: `${skill.category}: ${skill.skills.join(", ")}`,
-                      spacing: { after: 100 },
-                    }),
-                ),
-              ]
+                  new Paragraph({
+                    text: "SKILLS",
+                    heading: HeadingLevel.HEADING_2,
+                    spacing: { before: 200, after: 200 },
+                  }),
+                  ...resume.skills.map(
+                    (skill) =>
+                      new Paragraph({
+                        text: `${skill.category}: ${skill.skills.join(", ")}`,
+                        spacing: { after: 100 },
+                      }),
+                  ),
+                ]
               : []),
 
             // Certifications
             ...(resume.certifications.length > 0
               ? [
-                new Paragraph({
-                  text: "CERTIFICATIONS",
-                  heading: HeadingLevel.HEADING_2,
-                  spacing: { before: 200, after: 200 },
-                }),
-                ...resume.certifications.flatMap((cert) => [
                   new Paragraph({
-                    text: `${cert.name} - ${cert.issuer} (${cert.date})`,
-                    spacing: { after: 100 },
+                    text: "CERTIFICATIONS",
+                    heading: HeadingLevel.HEADING_2,
+                    spacing: { before: 200, after: 200 },
                   }),
-                  ...(cert.url
-                    ? [
-                      new Paragraph({
-                        text: cert.url,
-                        spacing: { after: 100 },
-                      }),
-                    ]
-                    : []),
-                ]),
-              ]
+                  ...resume.certifications.flatMap((cert) => [
+                    new Paragraph({
+                      text: `${cert.name} - ${cert.issuer} (${cert.date})`,
+                      spacing: { after: 100 },
+                    }),
+                    ...(cert.url
+                      ? [
+                          new Paragraph({
+                            text: cert.url,
+                            spacing: { after: 100 },
+                          }),
+                        ]
+                      : []),
+                  ]),
+                ]
               : []),
 
             // Languages
             ...(resume.languages.length > 0
               ? [
-                new Paragraph({
-                  text: "LANGUAGES",
-                  heading: HeadingLevel.HEADING_2,
-                  spacing: { before: 200, after: 200 },
-                }),
-                ...resume.languages.map(
-                  (lang) =>
-                    new Paragraph({
-                      text: `${lang.language}: ${lang.proficiency}`,
-                      spacing: { after: 100 },
-                    }),
-                ),
-              ]
+                  new Paragraph({
+                    text: "LANGUAGES",
+                    heading: HeadingLevel.HEADING_2,
+                    spacing: { before: 200, after: 200 },
+                  }),
+                  ...resume.languages.map(
+                    (lang) =>
+                      new Paragraph({
+                        text: `${lang.language}: ${lang.proficiency}`,
+                        spacing: { after: 100 },
+                      }),
+                  ),
+                ]
               : []),
           ],
         },
@@ -742,10 +750,7 @@ export default function ResumePage() {
               {/* Stats Grid Skeleton */}
               <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4 mt-4">
                 {[1, 2, 3, 4].map((j) => (
-                  <div
-                    key={j}
-                    className="bg-slate-900/50 p-4 rounded-lg"
-                  >
+                  <div key={j} className="bg-slate-900/50 p-4 rounded-lg">
                     <div className="flex items-center gap-2 mb-2">
                       <div className="w-4 h-4 bg-slate-700/50 rounded animate-pulse"></div>
                       <div className="h-4 w-24 bg-slate-700/30 rounded animate-pulse"></div>
@@ -1331,75 +1336,73 @@ export default function ResumePage() {
       </div>
 
       {/* Delete Confirmation Modal */}
-      {
-        deleteModal.show && (
+      {deleteModal.show && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4"
+          style={{ animation: "fadeIn 0.2s ease-out" }}
+        >
+          {/* Backdrop */}
           <div
-            className="fixed inset-0 z-50 flex items-center justify-center p-4"
-            style={{ animation: "fadeIn 0.2s ease-out" }}
+            className="absolute inset-0 bg-black bg-opacity-60"
+            style={{ backdropFilter: "blur(4px)" }}
+            onClick={closeDeleteModal}
+          ></div>
+
+          {/* Modal */}
+          <div
+            className="relative bg-slate-800 rounded-2xl border border-red-500 border-opacity-30 shadow-2xl max-w-md w-full"
+            style={{ animation: "scaleIn 0.2s ease-out" }}
           >
-            {/* Backdrop */}
-            <div
-              className="absolute inset-0 bg-black bg-opacity-60"
-              style={{ backdropFilter: "blur(4px)" }}
-              onClick={closeDeleteModal}
-            ></div>
-
-            {/* Modal */}
-            <div
-              className="relative bg-slate-800 rounded-2xl border border-red-500 border-opacity-30 shadow-2xl max-w-md w-full"
-              style={{ animation: "scaleIn 0.2s ease-out" }}
-            >
-              {/* Header */}
-              <div className="flex items-start gap-4 p-6 pb-4">
-                <div className="flex-shrink-0 w-12 h-12 rounded-full bg-red-500 bg-opacity-20 flex items-center justify-center">
-                  <AlertTriangle className="w-6 h-6 text-red-400" />
-                </div>
-                <div className="flex-1">
-                  <h3 className="text-xl font-bold text-white mb-1">
-                    Delete Resume
-                  </h3>
-                  <p className="text-gray-400 text-sm">
-                    This action cannot be undone
-                  </p>
-                </div>
-                <button
-                  onClick={closeDeleteModal}
-                  className="text-gray-400 hover:text-white transition-colors duration-200"
-                >
-                  <X className="w-5 h-5" />
-                </button>
+            {/* Header */}
+            <div className="flex items-start gap-4 p-6 pb-4">
+              <div className="flex-shrink-0 w-12 h-12 rounded-full bg-red-500 bg-opacity-20 flex items-center justify-center">
+                <AlertTriangle className="w-6 h-6 text-red-400" />
               </div>
-
-              {/* Content */}
-              <div className="px-6 pb-6">
-                <p className="text-gray-300 leading-relaxed">
-                  Are you sure you want to delete the resume for{" "}
-                  <span className="font-semibold text-white">
-                    {deleteModal.resumeName}
-                  </span>
-                  ? This will permanently remove the resume from your database.
+              <div className="flex-1">
+                <h3 className="text-xl font-bold text-white mb-1">
+                  Delete Resume
+                </h3>
+                <p className="text-gray-400 text-sm">
+                  This action cannot be undone
                 </p>
               </div>
+              <button
+                onClick={closeDeleteModal}
+                className="text-gray-400 hover:text-white transition-colors duration-200"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
 
-              {/* Actions */}
-              <div className="flex gap-3 p-6 pt-0">
-                <button
-                  onClick={closeDeleteModal}
-                  className="flex-1 px-4 py-2.5 bg-slate-700 hover:bg-slate-600 text-white rounded-lg transition-colors duration-200 font-medium"
-                >
-                  Cancel
-                </button>
-                <button
-                  onClick={handleDelete}
-                  className="flex-1 px-4 py-2.5 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors duration-200 font-medium"
-                >
-                  Delete
-                </button>
-              </div>
+            {/* Content */}
+            <div className="px-6 pb-6">
+              <p className="text-gray-300 leading-relaxed">
+                Are you sure you want to delete the resume for{" "}
+                <span className="font-semibold text-white">
+                  {deleteModal.resumeName}
+                </span>
+                ? This will permanently remove the resume from your database.
+              </p>
+            </div>
+
+            {/* Actions */}
+            <div className="flex gap-3 p-6 pt-0">
+              <button
+                onClick={closeDeleteModal}
+                className="flex-1 px-4 py-2.5 bg-slate-700 hover:bg-slate-600 text-white rounded-lg transition-colors duration-200 font-medium"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleDelete}
+                className="flex-1 px-4 py-2.5 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors duration-200 font-medium"
+              >
+                Delete
+              </button>
             </div>
           </div>
-        )
-      }
+        </div>
+      )}
 
       <style jsx>{`
         @keyframes fadeIn {
@@ -1422,6 +1425,6 @@ export default function ResumePage() {
           }
         }
       `}</style>
-    </div >
+    </div>
   );
 }
